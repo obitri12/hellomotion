@@ -40,6 +40,7 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     'api::alur-section.alur-section',
     'api::faq-section.faq-section',
     'api::daftar-section.daftar-section',
+    'api::seo-setting.seo-setting',
   ];
 
   // Registration needs "create" access too
@@ -96,6 +97,7 @@ async function seedContent(strapi: Core.Strapi) {
   await seedAlurSection(strapi);
   await seedFaqSection(strapi);
   await seedDaftarSection(strapi);
+  await seedSeoSettings(strapi);
   strapi.log.info('✅ Default content seeded');
 }
 
@@ -328,5 +330,19 @@ async function seedDaftarSection(strapi: Core.Strapi) {
     promo_3_desc: 'Jadi milik siswa setelah 3 tahun masa studi',
     form_title: 'Formulir Pendaftaran',
     form_subtitle: 'Tim admisi akan menghubungi kamu dalam 1×24 jam kerja.',
+  });
+}
+
+/* ── SEO Settings ─────────────────────────────── */
+async function seedSeoSettings(strapi: Core.Strapi) {
+  await seedSingle(strapi, 'api::seo-setting.seo-setting', {
+    meta_title: 'HelloMotion High School Malang — SMA Kreatif Pertama di Indonesia',
+    meta_description: 'SMA kreatif pertama di Indonesia dengan kurikulum double diploma. Belajar Filmmaking, Desain Grafis, Ilustrasi, Animasi & Fotografi. PPDB 2026/2027 dibuka — gratis biaya formulir + diskon SPP 25%.',
+    meta_keywords: 'SMA kreatif, HelloMotion, High School Malang, PPDB 2026, sekolah film, desain grafis SMA, double diploma, SMA Malang, sekolah kreatif',
+    og_title: 'HelloMotion High School Malang — More Than Just High School!',
+    og_description: 'SMA kreatif pertama di Indonesia. Double diploma, Creative Factory, dan iPad gratis untuk setiap siswa. PPDB 2026/2027 dibuka!',
+    canonical_url: '',
+    robots: 'index, follow',
+    google_verification: '',
   });
 }

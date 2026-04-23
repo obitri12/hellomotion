@@ -899,6 +899,44 @@ export interface ApiRegistrationRegistration
   };
 }
 
+export interface ApiSeoSettingSeoSetting extends Struct.SingleTypeSchema {
+  collectionName: 'seo_settings';
+  info: {
+    displayName: 'SEO Setting';
+    pluralName: 'seo-settings';
+    singularName: 'seo-setting';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    canonical_url: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    favicon: Schema.Attribute.Media<'images'>;
+    google_verification: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::seo-setting.seo-setting'
+    > &
+      Schema.Attribute.Private;
+    meta_description: Schema.Attribute.Text;
+    meta_keywords: Schema.Attribute.Text;
+    meta_title: Schema.Attribute.String;
+    og_description: Schema.Attribute.Text;
+    og_image: Schema.Attribute.Media<'images'>;
+    og_title: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    robots: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'index, follow'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiSiteSettingSiteSetting extends Struct.SingleTypeSchema {
   collectionName: 'site_settings';
   info: {
@@ -1592,6 +1630,7 @@ declare module '@strapi/strapi' {
       'api::life-section.life-section': ApiLifeSectionLifeSection;
       'api::life-tile.life-tile': ApiLifeTileLifeTile;
       'api::registration.registration': ApiRegistrationRegistration;
+      'api::seo-setting.seo-setting': ApiSeoSettingSeoSetting;
       'api::site-setting.site-setting': ApiSiteSettingSiteSetting;
       'api::subject.subject': ApiSubjectSubject;
       'api::subjects-section.subjects-section': ApiSubjectsSectionSubjectsSection;
