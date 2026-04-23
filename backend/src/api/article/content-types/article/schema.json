@@ -19,7 +19,7 @@
       "targetField": "title",
       "required": true
     },
-    "excerpt": {
+    "ringkasan": {
       "type": "text"
     },
     "content": {
@@ -41,6 +41,15 @@
     "featured": {
       "type": "boolean",
       "default": false
+    },
+    "seo_title": {
+      "type": "string"
+    },
+    "seo_description": {
+      "type": "text"
+    },
+    "seo_keywords": {
+      "type": "text"
     }
   }
 }

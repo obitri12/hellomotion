@@ -258,7 +258,32 @@ const ArticlePage = () => {
       if (res?.data?.[0]) {
         const a = res.data[0];
         setArticle(a);
-        document.title = `${a.title} — HelloMotion High School Malang`;
+
+        // SEO meta tags
+        const seoTitle = a.seo_title || `${a.title} — HelloMotion High School Malang`;
+        const seoDesc = a.seo_description || a.ringkasan || a.excerpt || '';
+        const seoKeywords = a.seo_keywords || '';
+        const ogImage = a.cover?.url ? `${STRAPI_URL}${a.cover.url}` : '';
+
+        document.title = seoTitle;
+
+        const setMeta = (attr, key, val) => {
+          if (!val) return;
+          let el = document.querySelector(`meta[${attr}="${key}"]`);
+          if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); }
+          el.setAttribute('content', val);
+        };
+        setMeta('name', 'description', seoDesc);
+        if (seoKeywords) setMeta('name', 'keywords', seoKeywords);
+        setMeta('property', 'og:title', seoTitle);
+        setMeta('property', 'og:description', seoDesc);
+        setMeta('property', 'og:type', 'article');
+        setMeta('property', 'og:url', window.location.href);
+        if (ogImage) setMeta('property', 'og:image', ogImage);
+        setMeta('name', 'twitter:card', 'summary_large_image');
+        setMeta('name', 'twitter:title', seoTitle);
+        setMeta('name', 'twitter:description', seoDesc);
+        if (ogImage) setMeta('name', 'twitter:image', ogImage);
 
         // Fetch related articles (same category, exclude current)
         if (a.category) {

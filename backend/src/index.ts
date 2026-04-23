@@ -355,7 +355,7 @@ async function seedArticles(strapi: Core.Strapi) {
     {
       title: 'PPDB 2026/2027 Resmi Dibuka — Daftar Sekarang!',
       slug: 'ppdb-2026-2027-resmi-dibuka',
-      excerpt: 'Pendaftaran Peserta Didik Baru HelloMotion High School Malang tahun ajaran 2026/2027 resmi dibuka. Dapatkan diskon SPP 25% dan iPad gratis untuk pendaftar gelombang 1.',
+      ringkasan: 'Pendaftaran Peserta Didik Baru HelloMotion High School Malang tahun ajaran 2026/2027 resmi dibuka. Dapatkan diskon SPP 25% dan iPad gratis untuk pendaftar gelombang 1.',
       content: '## PPDB 2026/2027 Resmi Dibuka!\n\nHelloMotion High School Malang membuka pendaftaran peserta didik baru untuk tahun ajaran 2026/2027.\n\n### Keuntungan Gelombang 1:\n- Gratis biaya formulir\n- Diskon SPP 25%\n- iPad gratis untuk setiap siswa\n\n### Jadwal Penting:\n- Pendaftaran: Sekarang s/d 30 Juni 2026\n- Tes Minat: Juli 2026\n- Pengumuman: 7 hari kerja setelah tes\n\nSegera daftarkan putra-putri Anda!',
       category: 'pengumuman',
       author: 'Tim Admisi',
@@ -364,7 +364,7 @@ async function seedArticles(strapi: Core.Strapi) {
     {
       title: 'Siswa HelloMotion Raih Medali Emas di FIKSI 2024',
       slug: 'medali-emas-fiksi-2024',
-      excerpt: 'Tim siswa HelloMotion berhasil meraih medali emas di Festival Inovasi dan Kewirausahaan Siswa Indonesia (FIKSI) 2024 dengan proyek film dokumenter.',
+      ringkasan: 'Tim siswa HelloMotion berhasil meraih medali emas di Festival Inovasi dan Kewirausahaan Siswa Indonesia (FIKSI) 2024 dengan proyek film dokumenter.',
       content: '## Medali Emas FIKSI 2024\n\nTim siswa HelloMotion High School Malang berhasil meraih medali emas di ajang Festival Inovasi dan Kewirausahaan Siswa Indonesia (FIKSI) 2024.\n\nProyek film dokumenter bertema lingkungan yang dikerjakan selama 3 bulan berhasil menyisihkan ratusan peserta dari seluruh Indonesia.\n\n> "Ini membuktikan bahwa pendekatan Creative Factory kami benar-benar menghasilkan karya berkualitas industri." — Kepala Sekolah',
       category: 'prestasi',
       author: 'Humas HelloMotion',
@@ -373,7 +373,7 @@ async function seedArticles(strapi: Core.Strapi) {
     {
       title: 'Tips Memilih SMA yang Tepat untuk Anak Kreatif',
       slug: 'tips-memilih-sma-anak-kreatif',
-      excerpt: 'Bingung memilih SMA untuk anak yang punya minat di bidang kreatif? Berikut 5 hal yang perlu dipertimbangkan orang tua.',
+      ringkasan: 'Bingung memilih SMA untuk anak yang punya minat di bidang kreatif? Berikut 5 hal yang perlu dipertimbangkan orang tua.',
       content: '## Tips Memilih SMA untuk Anak Kreatif\n\nMemilih sekolah menengah atas bukan keputusan mudah, apalagi jika anak Anda memiliki minat kuat di bidang kreatif.\n\n### 1. Cek Kurikulum\nApakah sekolah menyediakan mata pelajaran kreatif yang terstruktur?\n\n### 2. Fasilitas Praktik\nApakah ada studio, lab komputer, atau ruang kreatif yang memadai?\n\n### 3. Portofolio Lulusan\nLihat karya dan pencapaian alumni sebelumnya.\n\n### 4. Koneksi Industri\nApakah sekolah punya kerjasama dengan industri kreatif?\n\n### 5. Keseimbangan Akademik\nPastikan pelajaran umum tetap kuat untuk jalur kuliah.',
       category: 'tips',
       author: 'Tim Edukasi',
