@@ -1,0 +1,11 @@
+{
+  "name": "analytics",
+  "version": "1.0.0",
+  "description": "Google Analytics dashboard embed for Strapi admin",
+  "strapi": {
+    "name": "analytics",
+    "description": "Embed Google Analytics / Looker Studio in admin panel",
+    "kind": "plugin"
+  },
+  "dependencies": {}
+}
