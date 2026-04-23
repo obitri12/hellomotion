@@ -1,0 +1,38 @@
+{
+  "kind": "singleType",
+  "collectionName": "curriculum_sections",
+  "info": {
+    "singularName": "curriculum-section",
+    "pluralName": "curriculum-sections",
+    "displayName": "Curriculum Section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text"
+    },
+    "diploma_1_title": {
+      "type": "string"
+    },
+    "diploma_1_desc": {
+      "type": "string"
+    },
+    "diploma_2_title": {
+      "type": "string"
+    },
+    "diploma_2_desc": {
+      "type": "string"
+    },
+    "items": {
+      "type": "json"
+    }
+  }
+}

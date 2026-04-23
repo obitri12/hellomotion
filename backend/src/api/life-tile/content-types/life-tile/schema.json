@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "life_tiles",
+  "info": {
+    "singularName": "life-tile",
+    "pluralName": "life-tiles",
+    "displayName": "Life Tile"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "tile_type": {
+      "type": "enumeration",
+      "enum": ["classroom", "uniform", "ipad", "asrama"]
+    },
+    "icon": {
+      "type": "string"
+    },
+    "tag": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "order": {
+      "type": "integer"
+    }
+  }
+}

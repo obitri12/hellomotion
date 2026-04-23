@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "registrations",
+  "info": {
+    "singularName": "registration",
+    "pluralName": "registrations",
+    "displayName": "Registration"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nama": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "smp": {
+      "type": "string",
+      "required": true
+    },
+    "minat": {
+      "type": "string",
+      "required": true
+    },
+    "catatan": {
+      "type": "text"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["baru", "dihubungi", "diterima", "ditolak"],
+      "default": "baru"
+    }
+  }
+}
