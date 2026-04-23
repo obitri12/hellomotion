@@ -559,6 +559,43 @@ export interface ApiAlurSectionAlurSection extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
+  collectionName: 'articles';
+  info: {
+    displayName: 'Article';
+    pluralName: 'articles';
+    singularName: 'article';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    author: Schema.Attribute.String;
+    category: Schema.Attribute.Enumeration<
+      ['berita', 'kegiatan', 'prestasi', 'tips', 'pengumuman']
+    >;
+    content: Schema.Attribute.RichText;
+    cover: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    excerpt: Schema.Attribute.Text;
+    featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::article.article'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCurriculumSectionCurriculumSection
   extends Struct.SingleTypeSchema {
   collectionName: 'curriculum_sections';
@@ -1620,6 +1657,7 @@ declare module '@strapi/strapi' {
       'api::achievement.achievement': ApiAchievementAchievement;
       'api::alumni-section.alumni-section': ApiAlumniSectionAlumniSection;
       'api::alur-section.alur-section': ApiAlurSectionAlurSection;
+      'api::article.article': ApiArticleArticle;
       'api::curriculum-section.curriculum-section': ApiCurriculumSectionCurriculumSection;
       'api::daftar-section.daftar-section': ApiDaftarSectionDaftarSection;
       'api::factory-section.factory-section': ApiFactorySectionFactorySection;
