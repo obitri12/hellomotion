@@ -1,0 +1,47 @@
+{
+  "kind": "singleType",
+  "collectionName": "subjects_sections",
+  "info": {
+    "singularName": "subjects-section",
+    "pluralName": "subjects-sections",
+    "displayName": "Subjects Section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "text"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "creative_label": {
+      "type": "string"
+    },
+    "creative_title": {
+      "type": "string"
+    },
+    "creative_desc": {
+      "type": "text"
+    },
+    "creative_tagline": {
+      "type": "string"
+    },
+    "academic_label": {
+      "type": "string"
+    },
+    "academic_title": {
+      "type": "string"
+    },
+    "academic_desc": {
+      "type": "text"
+    },
+    "academic_tagline": {
+      "type": "string"
+    }
+  }
+}

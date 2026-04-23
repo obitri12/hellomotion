@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "life_sections",
+  "info": {
+    "singularName": "life-section",
+    "pluralName": "life-sections",
+    "displayName": "Life Section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "text"
+    },
+    "subtitle": {
+      "type": "text"
+    }
+  }
+}

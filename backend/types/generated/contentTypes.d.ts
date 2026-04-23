@@ -499,6 +499,66 @@ export interface ApiAchievementAchievement extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAlumniSectionAlumniSection extends Struct.SingleTypeSchema {
+  collectionName: 'alumni_sections';
+  info: {
+    displayName: 'Alumni Section';
+    pluralName: 'alumni-sections';
+    singularName: 'alumni-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    eyebrow: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::alumni-section.alumni-section'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiAlurSectionAlurSection extends Struct.SingleTypeSchema {
+  collectionName: 'alur_sections';
+  info: {
+    displayName: 'Alur Section';
+    pluralName: 'alur-sections';
+    singularName: 'alur-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    eyebrow: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::alur-section.alur-section'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCurriculumSectionCurriculumSection
   extends Struct.SingleTypeSchema {
   collectionName: 'curriculum_sections';
@@ -535,6 +595,79 @@ export interface ApiCurriculumSectionCurriculumSection
   };
 }
 
+export interface ApiDaftarSectionDaftarSection extends Struct.SingleTypeSchema {
+  collectionName: 'daftar_sections';
+  info: {
+    displayName: 'Daftar Section (CTA)';
+    pluralName: 'daftar-sections';
+    singularName: 'daftar-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    form_subtitle: Schema.Attribute.String;
+    form_title: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::daftar-section.daftar-section'
+    > &
+      Schema.Attribute.Private;
+    promo_1_desc: Schema.Attribute.String;
+    promo_1_icon: Schema.Attribute.String;
+    promo_1_title: Schema.Attribute.String;
+    promo_2_desc: Schema.Attribute.String;
+    promo_2_icon: Schema.Attribute.String;
+    promo_2_title: Schema.Attribute.String;
+    promo_3_desc: Schema.Attribute.String;
+    promo_3_icon: Schema.Attribute.String;
+    promo_3_title: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFactorySectionFactorySection
+  extends Struct.SingleTypeSchema {
+  collectionName: 'factory_sections';
+  info: {
+    displayName: 'Factory Section';
+    pluralName: 'factory-sections';
+    singularName: 'factory-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    benefit_text: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    eyebrow: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::factory-section.factory-section'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiFactoryFactory extends Struct.CollectionTypeSchema {
   collectionName: 'factories';
   info: {
@@ -560,6 +693,35 @@ export interface ApiFactoryFactory extends Struct.CollectionTypeSchema {
     name: Schema.Attribute.String;
     order: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFaqSectionFaqSection extends Struct.SingleTypeSchema {
+  collectionName: 'faq_sections';
+  info: {
+    displayName: 'FAQ Section';
+    pluralName: 'faq-sections';
+    singularName: 'faq-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    eyebrow: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::faq-section.faq-section'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.Text;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -627,6 +789,36 @@ export interface ApiHeroSectionHeroSection extends Struct.SingleTypeSchema {
     stat_3_label: Schema.Attribute.String;
     stat_3_value: Schema.Attribute.String;
     sub_text: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiLifeSectionLifeSection extends Struct.SingleTypeSchema {
+  collectionName: 'life_sections';
+  info: {
+    displayName: 'Life Section';
+    pluralName: 'life-sections';
+    singularName: 'life-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    eyebrow: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::life-section.life-section'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.Text;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -767,6 +959,45 @@ export interface ApiSubjectSubject extends Struct.CollectionTypeSchema {
     name: Schema.Attribute.String;
     order: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSubjectsSectionSubjectsSection
+  extends Struct.SingleTypeSchema {
+  collectionName: 'subjects_sections';
+  info: {
+    displayName: 'Subjects Section';
+    pluralName: 'subjects-sections';
+    singularName: 'subjects-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    academic_desc: Schema.Attribute.Text;
+    academic_label: Schema.Attribute.String;
+    academic_tagline: Schema.Attribute.String;
+    academic_title: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    creative_desc: Schema.Attribute.Text;
+    creative_label: Schema.Attribute.String;
+    creative_tagline: Schema.Attribute.String;
+    creative_title: Schema.Attribute.String;
+    eyebrow: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subjects-section.subjects-section'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.Text;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1349,14 +1580,21 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::achievement.achievement': ApiAchievementAchievement;
+      'api::alumni-section.alumni-section': ApiAlumniSectionAlumniSection;
+      'api::alur-section.alur-section': ApiAlurSectionAlurSection;
       'api::curriculum-section.curriculum-section': ApiCurriculumSectionCurriculumSection;
+      'api::daftar-section.daftar-section': ApiDaftarSectionDaftarSection;
+      'api::factory-section.factory-section': ApiFactorySectionFactorySection;
       'api::factory.factory': ApiFactoryFactory;
+      'api::faq-section.faq-section': ApiFaqSectionFaqSection;
       'api::faq.faq': ApiFaqFaq;
       'api::hero-section.hero-section': ApiHeroSectionHeroSection;
+      'api::life-section.life-section': ApiLifeSectionLifeSection;
       'api::life-tile.life-tile': ApiLifeTileLifeTile;
       'api::registration.registration': ApiRegistrationRegistration;
       'api::site-setting.site-setting': ApiSiteSettingSiteSetting;
       'api::subject.subject': ApiSubjectSubject;
+      'api::subjects-section.subjects-section': ApiSubjectsSectionSubjectsSection;
       'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::timeline-step.timeline-step': ApiTimelineStepTimelineStep;
       'plugin::content-releases.release': PluginContentReleasesRelease;

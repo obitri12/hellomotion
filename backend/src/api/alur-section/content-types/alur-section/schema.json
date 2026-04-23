@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "alur_sections",
+  "info": {
+    "singularName": "alur-section",
+    "pluralName": "alur-sections",
+    "displayName": "Alur Section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "text"
+    },
+    "subtitle": {
+      "type": "text"
+    }
+  }
+}

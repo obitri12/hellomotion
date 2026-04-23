@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "factory_sections",
+  "info": {
+    "singularName": "factory-section",
+    "pluralName": "factory-sections",
+    "displayName": "Factory Section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text"
+    },
+    "benefit_text": {
+      "type": "text"
+    }
+  }
+}

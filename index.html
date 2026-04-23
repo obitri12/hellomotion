@@ -1318,22 +1318,23 @@ const FACTORY_FALLBACK = [
   { icon: 'bi-code-slash', name: 'Coding Factory', description: 'Pengembangan software, game, dan produk digital.' },
   { icon: 'bi-image-fill', name: 'Paradise Picture', description: 'Rumah produksi film — proyek nyata bareng praktisi.' },
 ];
+const FACTORY_SEC_FALLBACK = {
+  eyebrow: '03 · Creative Factory ✦',
+  title: 'Belajar langsung di pusat industri kreatif.',
+  description: 'Kami tidak hanya belajar teori. HelloMotion High School Malang menggandeng Digital Factory, Animation Factory, Coding Factory, dan Paradise Picture di Kawasan KEK Singhasari. Siswa mengerjakan proyek langsung bersama para ahli dan terhubung dengan industri kreatif sejak kelas 10.',
+  benefit_text: 'Keuntungan nyata: portofolio industri sejak SMA, relasi profesional, & peluang magang di KEK Singhasari — bekal untuk karier kreatif atau studi lanjut.',
+};
 
 const Factory = () => {
   const factories = useCMS('/factories?sort=order:asc&status=published', FACTORY_FALLBACK, (res) => res.data);
+  const sec = useCMS('/factory-section?status=published', FACTORY_SEC_FALLBACK, (res) => res.data);
   return (
     <section id="factory" className="section factory">
       <div className="container">
         <div className="factory__head">
-          <span className="section-eyebrow">03 · Creative Factory ✦</span>
-          <h2 className="section-title">
-            Belajar langsung di <em className="hl-pill hl-pink">pusat industri</em> kreatif.
-          </h2>
-          <p>
-            Kami tidak hanya belajar teori. HelloMotion High School Malang menggandeng Digital Factory,
-            Animation Factory, Coding Factory, dan Paradise Picture di <strong>Kawasan KEK Singhasari</strong>.
-            Siswa mengerjakan proyek langsung bersama para ahli dan terhubung dengan industri kreatif sejak kelas 10.
-          </p>
+          <span className="section-eyebrow">{sec.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{__html: (sec.title || '').replace(/pusat industri/g, '<em class="hl-pill hl-pink">pusat industri</em>')}} />
+          <p>{sec.description}</p>
         </div>
 
         <div className="factory__grid">
@@ -1349,10 +1350,7 @@ const Factory = () => {
 
         <div className="factory__benefit">
           <i className="bi bi-award-fill"></i>
-          <span>
-            <strong>Keuntungan nyata:</strong> portofolio industri sejak SMA, relasi profesional,
-            &amp; peluang magang di KEK Singhasari — bekal untuk karier kreatif atau studi lanjut.
-          </span>
+          <span>{sec.benefit_text}</span>
         </div>
       </div>
     </section>
@@ -1364,9 +1362,21 @@ const SUBJECTS_FALLBACK = {
   creative: ['Fotografi', 'Desain Grafis', 'Ilustrasi', 'Animasi', 'Filmmaking'],
   academic: ['Ekonomi', 'Matematika', 'Bhs Inggris', 'Bhs Jepang', 'Entrepreneurship', 'IPS/IPA Terintegrasi'],
 };
+const SUBJ_SEC_FALLBACK = {
+  eyebrow: '04 · Mata Pelajaran ★',
+  title: 'Seimbang antara kreativitas & akademik.',
+  subtitle: 'Lebih banyak praktik daripada teori. Pelajaran umum di HelloMotion pun seru, aplikatif, dan tidak pernah PR.',
+  creative_label: 'Mapel Khas', creative_title: 'Untuk melatih cipta & rasa.',
+  creative_desc: 'Mata pelajaran spesialisasi industri kreatif — diajar langsung oleh praktisi profesional.',
+  creative_tagline: 'Setiap siswa bebas eksplorasi minat sejak kelas 10.',
+  academic_label: 'Mapel Umum', academic_title: 'Pondasi akademik yang kuat.',
+  academic_desc: 'Kurikulum Merdeka dikemas lewat metode PBL — aplikatif, menyenangkan, dan tanpa PR.',
+  academic_tagline: 'Siap SNBP / SNBT maupun jalur prestasi.',
+};
 
 const Subjects = () => {
   const subjects = useCMS('/subjects?sort=order:asc&status=published', null, (res) => res.data);
+  const sec = useCMS('/subjects-section?status=published', SUBJ_SEC_FALLBACK, (res) => res.data);
   const creative = subjects ? subjects.filter(s => s.category === 'creative').map(s => s.name) : SUBJECTS_FALLBACK.creative;
   const academic = subjects ? subjects.filter(s => s.category === 'academic').map(s => s.name) : SUBJECTS_FALLBACK.academic;
 
@@ -1374,35 +1384,31 @@ const Subjects = () => {
     <section id="subjects" className="section">
       <div className="container">
         <div style={{textAlign: 'center', maxWidth: 760, margin: '0 auto'}}>
-          <span className="section-eyebrow">04 · Mata Pelajaran ★</span>
-          <h2 className="section-title">
-            Seimbang antara <em className="hl-pill hl-pink">kreativitas</em> &amp; <em className="hl-pill hl-mint">akademik.</em>
-          </h2>
-          <p style={{marginTop: 18, fontSize: 17}}>
-            Lebih banyak praktik daripada teori. Pelajaran umum di HelloMotion pun seru, aplikatif, dan tidak pernah PR.
-          </p>
+          <span className="section-eyebrow">{sec.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{__html: (sec.title || '').replace(/kreativitas/g, '<em class="hl-pill hl-pink">kreativitas</em>').replace(/akademik/g, '<em class="hl-pill hl-mint">akademik</em>')}} />
+          <p style={{marginTop: 18, fontSize: 17}}>{sec.subtitle}</p>
         </div>
 
         <div className="subjects__split">
           <div className="subject-col subject-col--creative">
-            <span className="subject-col__label">Mapel Khas</span>
-            <h3>Untuk melatih cipta &amp; rasa.</h3>
-            <p>Mata pelajaran spesialisasi industri kreatif — diajar langsung oleh praktisi profesional.</p>
+            <span className="subject-col__label">{sec.creative_label}</span>
+            <h3>{sec.creative_title}</h3>
+            <p>{sec.creative_desc}</p>
             <ul>{creative.map(c => <li key={c}>{c}</li>)}</ul>
             <div className="subject-col__tagline">
               <i className="bi bi-brush-fill"></i>
-              Setiap siswa bebas eksplorasi minat sejak kelas 10.
+              {sec.creative_tagline}
             </div>
           </div>
 
           <div className="subject-col subject-col--academic">
-            <span className="subject-col__label">Mapel Umum</span>
-            <h3>Pondasi akademik yang kuat.</h3>
-            <p>Kurikulum Merdeka dikemas lewat metode PBL — aplikatif, menyenangkan, dan <strong>tanpa PR</strong>.</p>
+            <span className="subject-col__label">{sec.academic_label}</span>
+            <h3>{sec.academic_title}</h3>
+            <p>{sec.academic_desc}</p>
             <ul>{academic.map(a => <li key={a}>{a}</li>)}</ul>
             <div className="subject-col__tagline">
               <i className="bi bi-book-half"></i>
-              Siap SNBP / SNBT maupun jalur prestasi.
+              {sec.academic_tagline}
             </div>
           </div>
         </div>
@@ -1421,6 +1427,7 @@ const LIFE_FALLBACK = [
 
 const Life = () => {
   const tiles = useCMS('/life-tiles?sort=order:asc&populate=*&status=published', LIFE_FALLBACK, (res) => res.data);
+  const sec = useCMS('/life-section?status=published', {eyebrow:'05 · Kehidupan Sekolah ✎',title:'Sekolah paling seru buat anak kreatif 😎',subtitle:'Di HelloMotion, suasana belajar sehangat studio — kolaboratif, bebas ekspresi, dan penuh kejutan.'}, (res) => res.data);
 
   const renderTile = (t) => {
     const imgUrl = t.image?.url ? `${STRAPI_URL}${t.image.url}` : 'assets/asrama.png';
@@ -1449,13 +1456,9 @@ const Life = () => {
     <section id="life" className="section life">
       <div className="container">
         <div style={{maxWidth: 720}}>
-          <span className="section-eyebrow">05 · Kehidupan Sekolah ✎</span>
-          <h2 className="section-title">
-            Sekolah paling seru buat <em className="hl-pill hl-pink">anak kreatif</em> 😎
-          </h2>
-          <p style={{marginTop: 18, fontSize: 17}}>
-            Di HelloMotion, suasana belajar sehangat studio — kolaboratif, bebas ekspresi, dan penuh kejutan.
-          </p>
+          <span className="section-eyebrow">{sec.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{__html: (sec.title || '').replace(/anak kreatif/g, '<em class="hl-pill hl-pink">anak kreatif</em>')}} />
+          <p style={{marginTop: 18, fontSize: 17}}>{sec.subtitle}</p>
         </div>
         <div className="life__grid">
           {tiles.map(renderTile)}
@@ -1481,21 +1484,17 @@ const TESTI_FALLBACK = [
 const Alumni = () => {
   const achievements = useCMS('/achievements?sort=order:asc&status=published', ACH_FALLBACK, (res) => res.data);
   const testimonis = useCMS('/testimonials?sort=order:asc&status=published', TESTI_FALLBACK, (res) => res.data);
+  const sec = useCMS('/alumni-section?status=published', {eyebrow:'06 · Alumni & Prestasi ✦',title:'Prestasi tanpa batas, masa depan berkelas.',subtitle:'Alumni kami telah menembus berbagai PTN ternama dan kampus kreatif luar negeri — bersaing di dunia kreatif dengan prestasi nasional yang nyata.'}, (res) => res.data);
 
   return (
     <section id="alumni" className="section">
       <div className="container">
         <div className="alumni__head">
           <div>
-            <span className="section-eyebrow">06 · Alumni &amp; Prestasi ✦</span>
-            <h2 className="section-title">
-              Prestasi tanpa batas, <em className="hl-pill hl-yellow">masa depan berkelas.</em>
-            </h2>
+            <span className="section-eyebrow">{sec.eyebrow}</span>
+            <h2 className="section-title" dangerouslySetInnerHTML={{__html: (sec.title || '').replace(/masa depan berkelas/g, '<em class="hl-pill hl-yellow">masa depan berkelas.</em>')}} />
           </div>
-          <p style={{maxWidth: 380, fontSize: 16}}>
-            Alumni kami telah menembus berbagai PTN ternama dan kampus kreatif luar negeri —
-            bersaing di dunia kreatif dengan prestasi nasional yang nyata.
-          </p>
+          <p style={{maxWidth: 380, fontSize: 16}}>{sec.subtitle}</p>
         </div>
 
         <div className="achievement-strip">
@@ -1540,15 +1539,14 @@ const STEPS_FALLBACK = [
 
 const Alur = () => {
   const steps = useCMS('/timeline-steps?sort=order:asc&status=published', STEPS_FALLBACK, (res) => res.data);
+  const sec = useCMS('/alur-section?status=published', {eyebrow:'07 · Alur PPDB ✎',title:'Lima langkah jadi siswa HelloMotion.',subtitle:'Prosesnya simpel — kami dampingi dari formulir sampai hari pertama sekolah.'}, (res) => res.data);
   return (
     <section id="alur" className="section alur">
       <div className="container">
         <div style={{textAlign: 'center', maxWidth: 640, margin: '0 auto'}}>
-          <span className="section-eyebrow">07 · Alur PPDB ✎</span>
-          <h2 className="section-title">
-            Lima langkah jadi <em className="hl-pill hl-pink">siswa HelloMotion.</em>
-          </h2>
-          <p style={{marginTop: 16}}>Prosesnya simpel — kami dampingi dari formulir sampai hari pertama sekolah.</p>
+          <span className="section-eyebrow">{sec.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{__html: (sec.title || '').replace(/siswa HelloMotion/g, '<em class="hl-pill hl-pink">siswa HelloMotion.</em>')}} />
+          <p style={{marginTop: 16}}>{sec.subtitle}</p>
         </div>
         <div className="timeline">
           {steps.map((s) => (
@@ -1577,13 +1575,12 @@ const FAQ_FALLBACK = [
 const FAQ = () => {
   const [openIdx, setOpenIdx] = React.useState(0);
   const faqs = useCMS('/faqs?sort=order:asc&status=published', FAQ_FALLBACK, (res) => res.data);
+  const sec = useCMS('/faq-section?status=published', {eyebrow:'FAQ ✦',title:'Pertanyaan yang sering ditanyakan.'}, (res) => res.data);
   return (
     <section id="faq" className="section">
       <div className="container" style={{textAlign: 'center'}}>
-        <span className="section-eyebrow">FAQ ✦</span>
-        <h2 className="section-title">
-          Pertanyaan yang sering <em className="hl-pill hl-yellow">ditanyakan.</em>
-        </h2>
+        <span className="section-eyebrow">{sec.eyebrow}</span>
+        <h2 className="section-title" dangerouslySetInnerHTML={{__html: (sec.title || '').replace(/ditanyakan/g, '<em class="hl-pill hl-yellow">ditanyakan.</em>')}} />
         <div className="faq__wrap" style={{textAlign: 'left'}}>
           {faqs.map((f, i) => (
             <div key={i} className={`faq-item ${openIdx === i ? 'open' : ''}`}>
@@ -1601,7 +1598,19 @@ const FAQ = () => {
 };
 
 /* ── Daftar ─────────────────────────────────────── */
+const DAFTAR_SEC_FALLBACK = {
+  eyebrow: 'Final CTA 🎓',
+  title: 'ENROLL NOW!\nKuota terbatas.',
+  description: 'Dapatkan promo gelombang 1: gratis biaya formulir + diskon SPP hingga 25%. Formulir online hanya 3 menit.',
+  promo_1_icon: 'bi-ticket-perforated-fill', promo_1_title: 'Gratis biaya formulir', promo_1_desc: 'Pendaftaran online tanpa biaya admin',
+  promo_2_icon: 'bi-percent', promo_2_title: 'Diskon SPP 25%', promo_2_desc: 'Khusus pendaftar gelombang 1 (sampai 30 Juni 2026)',
+  promo_3_icon: 'bi-tablet-fill', promo_3_title: 'Free iPad untuk siswa baru', promo_3_desc: 'Jadi milik siswa setelah 3 tahun masa studi',
+  form_title: 'Formulir Pendaftaran',
+  form_subtitle: 'Tim admisi akan menghubungi kamu dalam 1×24 jam kerja.',
+};
+
 const Daftar = () => {
+  const sec = useCMS('/daftar-section?status=published', DAFTAR_SEC_FALLBACK, (res) => res.data);
   const [form, setForm] = React.useState({
     nama: '', email: '', phone: '', smp: '', minat: '', catatan: ''
   });
@@ -1648,36 +1657,34 @@ const Daftar = () => {
 
       <div className="container daftar__grid">
         <div className="daftar__promo">
-          <span className="section-eyebrow">Final CTA 🎓</span>
+          <span className="section-eyebrow">{sec.eyebrow}</span>
           <h2 className="section-title" style={{color: 'white'}}>
-            <em className="hl-pill hl-yellow">ENROLL NOW!</em><br/>
-            Kuota terbatas.
+            {(sec.title || '').split('\n').map((line, i) => <React.Fragment key={i}>{i === 0 ? <><em className="hl-pill hl-yellow">{line}</em><br/></> : line}</React.Fragment>)}
           </h2>
           <p style={{marginTop: 20, fontSize: 17, color: 'rgba(255,255,255,0.9)', maxWidth: 480}}>
-            Dapatkan promo gelombang 1: gratis biaya formulir + diskon SPP hingga 25%.
-            Formulir online hanya 3 menit.
+            {sec.description}
           </p>
 
           <div className="daftar__promo-highlights">
             <div className="promo-row">
-              <div className="promo-row__icon"><i className="bi bi-ticket-perforated-fill"></i></div>
+              <div className="promo-row__icon"><i className={`bi ${sec.promo_1_icon}`}></i></div>
               <div>
-                <strong>Gratis biaya formulir</strong>
-                <small>Pendaftaran online tanpa biaya admin</small>
+                <strong>{sec.promo_1_title}</strong>
+                <small>{sec.promo_1_desc}</small>
               </div>
             </div>
             <div className="promo-row">
-              <div className="promo-row__icon"><i className="bi bi-percent"></i></div>
+              <div className="promo-row__icon"><i className={`bi ${sec.promo_2_icon}`}></i></div>
               <div>
-                <strong>Diskon SPP 25%</strong>
-                <small>Khusus pendaftar gelombang 1 (sampai 30 Juni 2026)</small>
+                <strong>{sec.promo_2_title}</strong>
+                <small>{sec.promo_2_desc}</small>
               </div>
             </div>
             <div className="promo-row">
-              <div className="promo-row__icon"><i className="bi bi-tablet-fill"></i></div>
+              <div className="promo-row__icon"><i className={`bi ${sec.promo_3_icon}`}></i></div>
               <div>
-                <strong>Free iPad untuk siswa baru</strong>
-                <small>Jadi milik siswa setelah 3 tahun masa studi</small>
+                <strong>{sec.promo_3_title}</strong>
+                <small>{sec.promo_3_desc}</small>
               </div>
             </div>
           </div>
@@ -1686,8 +1693,8 @@ const Daftar = () => {
         <div className="form-card">
           {!submitted ? (
             <>
-              <h3>Formulir Pendaftaran</h3>
-              <p>Tim admisi akan menghubungi kamu dalam 1×24 jam kerja.</p>
+              <h3>{sec.form_title}</h3>
+              <p>{sec.form_subtitle}</p>
               <form onSubmit={submit} noValidate>
                 <div className="form-row">
                   <div className={`field ${errors.nama ? 'error' : ''}`}>

@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "alumni_sections",
+  "info": {
+    "singularName": "alumni-section",
+    "pluralName": "alumni-sections",
+    "displayName": "Alumni Section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "text"
+    },
+    "subtitle": {
+      "type": "text"
+    }
+  }
+}

@@ -33,6 +33,13 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     'api::timeline-step.timeline-step',
     'api::faq.faq',
     'api::site-setting.site-setting',
+    'api::factory-section.factory-section',
+    'api::subjects-section.subjects-section',
+    'api::life-section.life-section',
+    'api::alumni-section.alumni-section',
+    'api::alur-section.alur-section',
+    'api::faq-section.faq-section',
+    'api::daftar-section.daftar-section',
   ];
 
   // Registration needs "create" access too
@@ -82,6 +89,13 @@ async function seedContent(strapi: Core.Strapi) {
   await seedTimelineSteps(strapi);
   await seedFAQs(strapi);
   await seedSiteSettings(strapi);
+  await seedFactorySection(strapi);
+  await seedSubjectsSection(strapi);
+  await seedLifeSection(strapi);
+  await seedAlumniSection(strapi);
+  await seedAlurSection(strapi);
+  await seedFaqSection(strapi);
+  await seedDaftarSection(strapi);
   strapi.log.info('✅ Default content seeded');
 }
 
@@ -232,5 +246,87 @@ async function seedSiteSettings(strapi: Core.Strapi) {
     website: 'hellomotion.sch.id',
     address: 'Gedung Malang Creative Center (MCC)\nLantai 5, Kawasan KEK Singhasari\nMalang, Jawa Timur',
     footer_text: '© 2026 HelloMotion High School. All rights reserved.',
+  });
+}
+
+/* ── Factory Section ──────────────────────────── */
+async function seedFactorySection(strapi: Core.Strapi) {
+  await seedSingle(strapi, 'api::factory-section.factory-section', {
+    eyebrow: '03 · Creative Factory ✦',
+    title: 'Belajar langsung di pusat industri kreatif.',
+    description: 'Kami tidak hanya belajar teori. HelloMotion High School Malang menggandeng Digital Factory, Animation Factory, Coding Factory, dan Paradise Picture di Kawasan KEK Singhasari. Siswa mengerjakan proyek langsung bersama para ahli dan terhubung dengan industri kreatif sejak kelas 10.',
+    benefit_text: 'Keuntungan nyata: portofolio industri sejak SMA, relasi profesional, & peluang magang di KEK Singhasari — bekal untuk karier kreatif atau studi lanjut.',
+  });
+}
+
+/* ── Subjects Section ─────────────────────────── */
+async function seedSubjectsSection(strapi: Core.Strapi) {
+  await seedSingle(strapi, 'api::subjects-section.subjects-section', {
+    eyebrow: '04 · Mata Pelajaran ★',
+    title: 'Seimbang antara kreativitas & akademik.',
+    subtitle: 'Lebih banyak praktik daripada teori. Pelajaran umum di HelloMotion pun seru, aplikatif, dan tidak pernah PR.',
+    creative_label: 'Mapel Khas',
+    creative_title: 'Untuk melatih cipta & rasa.',
+    creative_desc: 'Mata pelajaran spesialisasi industri kreatif — diajar langsung oleh praktisi profesional.',
+    creative_tagline: 'Setiap siswa bebas eksplorasi minat sejak kelas 10.',
+    academic_label: 'Mapel Umum',
+    academic_title: 'Pondasi akademik yang kuat.',
+    academic_desc: 'Kurikulum Merdeka dikemas lewat metode PBL — aplikatif, menyenangkan, dan tanpa PR.',
+    academic_tagline: 'Siap SNBP / SNBT maupun jalur prestasi.',
+  });
+}
+
+/* ── Life Section ─────────────────────────────── */
+async function seedLifeSection(strapi: Core.Strapi) {
+  await seedSingle(strapi, 'api::life-section.life-section', {
+    eyebrow: '05 · Kehidupan Sekolah ✎',
+    title: 'Sekolah paling seru buat anak kreatif 😎',
+    subtitle: 'Di HelloMotion, suasana belajar sehangat studio — kolaboratif, bebas ekspresi, dan penuh kejutan.',
+  });
+}
+
+/* ── Alumni Section ───────────────────────────── */
+async function seedAlumniSection(strapi: Core.Strapi) {
+  await seedSingle(strapi, 'api::alumni-section.alumni-section', {
+    eyebrow: '06 · Alumni & Prestasi ✦',
+    title: 'Prestasi tanpa batas, masa depan berkelas.',
+    subtitle: 'Alumni kami telah menembus berbagai PTN ternama dan kampus kreatif luar negeri — bersaing di dunia kreatif dengan prestasi nasional yang nyata.',
+  });
+}
+
+/* ── Alur Section ─────────────────────────────── */
+async function seedAlurSection(strapi: Core.Strapi) {
+  await seedSingle(strapi, 'api::alur-section.alur-section', {
+    eyebrow: '07 · Alur PPDB ✎',
+    title: 'Lima langkah jadi siswa HelloMotion.',
+    subtitle: 'Prosesnya simpel — kami dampingi dari formulir sampai hari pertama sekolah.',
+  });
+}
+
+/* ── FAQ Section ──────────────────────────────── */
+async function seedFaqSection(strapi: Core.Strapi) {
+  await seedSingle(strapi, 'api::faq-section.faq-section', {
+    eyebrow: 'FAQ ✦',
+    title: 'Pertanyaan yang sering ditanyakan.',
+  });
+}
+
+/* ── Daftar Section ───────────────────────────── */
+async function seedDaftarSection(strapi: Core.Strapi) {
+  await seedSingle(strapi, 'api::daftar-section.daftar-section', {
+    eyebrow: 'Final CTA 🎓',
+    title: 'ENROLL NOW!\nKuota terbatas.',
+    description: 'Dapatkan promo gelombang 1: gratis biaya formulir + diskon SPP hingga 25%. Formulir online hanya 3 menit.',
+    promo_1_icon: 'bi-ticket-perforated-fill',
+    promo_1_title: 'Gratis biaya formulir',
+    promo_1_desc: 'Pendaftaran online tanpa biaya admin',
+    promo_2_icon: 'bi-percent',
+    promo_2_title: 'Diskon SPP 25%',
+    promo_2_desc: 'Khusus pendaftar gelombang 1 (sampai 30 Juni 2026)',
+    promo_3_icon: 'bi-tablet-fill',
+    promo_3_title: 'Free iPad untuk siswa baru',
+    promo_3_desc: 'Jadi milik siswa setelah 3 tahun masa studi',
+    form_title: 'Formulir Pendaftaran',
+    form_subtitle: 'Tim admisi akan menghubungi kamu dalam 1×24 jam kerja.',
   });
 }
