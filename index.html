@@ -1250,33 +1250,42 @@ const Hero = () => {
 };
 
 /* ── Curriculum ─────────────────────────────────────── */
+const CURR_FALLBACK = {
+  eyebrow: '02 · Kurikulum ✎',
+  title: 'Kurikulum inovatif & dua ijazah.',
+  description: 'Kami menggabungkan kurikulum nasional Kemendikbud dengan modifikasi khusus. Lulusan mendapatkan dua ijazah sekaligus: Kemendikbud dan Industri Kreatif — siap terjun ke dunia kerja profesional atau melanjutkan ke PT favorit.',
+  diploma_1_title: 'Kemendikbud Ristek',
+  diploma_1_desc: 'Ijazah SMA resmi Kurikulum Merdeka — diakui seluruh PTN & PTS di Indonesia.',
+  diploma_2_title: 'Industri Kreatif',
+  diploma_2_desc: 'Sertifikasi kompetensi kreatif (Filmmaking, Desain, Animasi) untuk jalur industri & freelance.',
+  items: [
+    { title: 'Keterampilan Abad 21', description: '4C: Critical thinking, Communication, Collaboration, Creativity' },
+    { title: 'Design Thinking', description: 'Empati → Ideasi → Prototipe → Tes — terintegrasi di semua mapel' },
+    { title: 'STEAM', description: 'Science, Tech, Engineering, Arts & Math dalam proyek lintas disiplin' },
+    { title: 'Project Based Learning', description: 'Belajar lewat proyek nyata, output nyata, dampak nyata' },
+  ],
+};
+
 const Curriculum = () => {
-  const items = [
-    { t: 'Keterampilan Abad 21', d: '4C: Critical thinking, Communication, Collaboration, Creativity' },
-    { t: 'Design Thinking', d: 'Empati → Ideasi → Prototipe → Tes — terintegrasi di semua mapel' },
-    { t: 'STEAM', d: 'Science, Tech, Engineering, Arts & Math dalam proyek lintas disiplin' },
-    { t: 'Project Based Learning', d: 'Belajar lewat proyek nyata, output nyata, dampak nyata' },
-  ];
+  const c = useCMS('/curriculum-section?status=published', CURR_FALLBACK, (res) => res.data);
+  const items = c.items || CURR_FALLBACK.items;
+
   return (
     <section id="curriculum" className="section curriculum">
       <div className="container curriculum__grid">
         <div>
-          <span className="section-eyebrow">02 · Kurikulum ✎</span>
-          <h2 className="section-title">
-            Kurikulum inovatif &amp; <em className="hl-pill hl-yellow">dua ijazah.</em>
-          </h2>
+          <span className="section-eyebrow">{c.eyebrow}</span>
+          <h2 className="section-title" dangerouslySetInnerHTML={{__html: (c.title || '').replace(/dua ijazah/g, '<em class="hl-pill hl-yellow">dua ijazah.</em>')}} />
           <p style={{marginTop: 20, fontSize: 17, maxWidth: 520}}>
-            Kami menggabungkan kurikulum nasional Kemendikbud dengan modifikasi khusus. Lulusan mendapatkan
-            <strong> dua ijazah sekaligus</strong>: Kemendikbud dan Industri Kreatif — siap terjun ke dunia kerja
-            profesional atau melanjutkan ke PT favorit.
+            {c.description}
           </p>
           <ul className="curr-list">
             {items.map((it, i) => (
               <li key={i}>
                 <div className="dot">0{i+1}</div>
                 <div>
-                  <strong>{it.t}</strong>
-                  <small>{it.d}</small>
+                  <strong>{it.title || it.t}</strong>
+                  <small>{it.description || it.d}</small>
                 </div>
               </li>
             ))}
@@ -1286,14 +1295,14 @@ const Curriculum = () => {
         <div className="diploma-stack">
           <div className="diploma diploma--1">
             <span className="diploma__ribbon">IJAZAH 01</span>
-            <h4>Kemendikbud Ristek</h4>
-            <p>Ijazah SMA resmi Kurikulum Merdeka — diakui seluruh PTN &amp; PTS di Indonesia.</p>
+            <h4>{c.diploma_1_title}</h4>
+            <p>{c.diploma_1_desc}</p>
             <div className="diploma__seal">Resmi</div>
           </div>
           <div className="diploma diploma--2">
             <span className="diploma__ribbon">IJAZAH 02</span>
-            <h4>Industri Kreatif</h4>
-            <p>Sertifikasi kompetensi kreatif (Filmmaking, Desain, Animasi) untuk jalur industri &amp; freelance.</p>
+            <h4>{c.diploma_2_title}</h4>
+            <p>{c.diploma_2_desc}</p>
             <div className="diploma__seal" style={{background: 'var(--hm-pink)', boxShadow: '0 0 0 2px var(--hm-pink)'}}>Kreatif</div>
           </div>
         </div>
@@ -1403,7 +1412,39 @@ const Subjects = () => {
 };
 
 /* ── Life ─────────────────────────────────────── */
+const LIFE_FALLBACK = [
+  { title: 'Creative Classrooms', description: 'Kelas wajib dicoret-coret dan dihias sesuai keinginan kelas. Dinding adalah kanvas.', tile_type: 'classroom', icon: 'bi-easel2-fill', tag: 'ruang kelas ✨' },
+  { title: 'Custom Uniform', description: 'Seragam desain sendiri — hanya dipakai hari Senin. Selebihnya bebas & ekspresif.', tile_type: 'uniform', icon: 'bi-palette2', tag: '' },
+  { title: 'One Student, One iPad', description: 'Dukungan penuh teknologi Apple untuk eksplorasi tanpa batas. Gratis untuk siswa baru.', tile_type: 'ipad', icon: 'bi-tablet-fill', tag: '' },
+  { title: 'Asrama & Lingkungan 24/7', description: 'Hunian nyaman bagi siswa luar kota. Pendampingan akademik dan pembinaan karakter harian oleh mentor.', tile_type: 'asrama', icon: '', tag: '' },
+];
+
 const Life = () => {
+  const tiles = useCMS('/life-tiles?sort=order:asc&populate=*&status=published', LIFE_FALLBACK, (res) => res.data);
+
+  const renderTile = (t) => {
+    const imgUrl = t.image?.url ? `${STRAPI_URL}${t.image.url}` : 'assets/asrama.png';
+    if (t.tile_type === 'asrama') {
+      return (
+        <div key={t.title} className="life-tile life-tile--asrama">
+          <img src={imgUrl} alt={t.title} />
+          <div className="asrama-body">
+            <h4>{t.title}</h4>
+            <p>{t.description}</p>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div key={t.title} className={`life-tile life-tile--${t.tile_type}`}>
+        {t.tag && <span className="life-tile__tag">{t.tag}</span>}
+        {t.icon && <i className={`bi ${t.icon} life-tile__icon`}></i>}
+        <h4>{t.title}</h4>
+        <p>{t.description}</p>
+      </div>
+    );
+  };
+
   return (
     <section id="life" className="section life">
       <div className="container">
@@ -1416,34 +1457,8 @@ const Life = () => {
             Di HelloMotion, suasana belajar sehangat studio — kolaboratif, bebas ekspresi, dan penuh kejutan.
           </p>
         </div>
-
         <div className="life__grid">
-          <div className="life-tile life-tile--classroom">
-            <span className="life-tile__tag">ruang kelas ✨</span>
-            <i className="bi bi-easel2-fill life-tile__icon"></i>
-            <h4>Creative Classrooms</h4>
-            <p>Kelas wajib dicoret-coret dan dihias sesuai keinginan kelas. Dinding adalah kanvas.</p>
-          </div>
-
-          <div className="life-tile life-tile--uniform">
-            <i className="bi bi-palette2 life-tile__icon"></i>
-            <h4>Custom Uniform</h4>
-            <p>Seragam desain sendiri — hanya dipakai hari Senin. Selebihnya bebas &amp; ekspresif.</p>
-          </div>
-
-          <div className="life-tile life-tile--ipad">
-            <i className="bi bi-tablet-fill life-tile__icon"></i>
-            <h4>One Student, One iPad</h4>
-            <p>Dukungan penuh teknologi Apple untuk eksplorasi tanpa batas. Gratis untuk siswa baru.</p>
-          </div>
-
-          <div className="life-tile life-tile--asrama">
-            <img src="assets/asrama.png" alt="Asrama HelloMotion" />
-            <div className="asrama-body">
-              <h4>Asrama &amp; Lingkungan 24/7</h4>
-              <p>Hunian nyaman bagi siswa luar kota. Pendampingan akademik dan pembinaan karakter harian oleh mentor.</p>
-            </div>
-          </div>
+          {tiles.map(renderTile)}
         </div>
       </div>
     </section>
