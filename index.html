@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HelloMotion High School Malang — SMA Kreatif Pertama di Indonesia</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+/* ============================================================
+   HelloMotion High School — Brand Tokens
+   Derived from PPDB 2026/2027 poster
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Caveat:wght@400;700&display=swap');
+
+:root {
+  /* Brand palette — exact hex from poster */
+  --hm-pink: #E66571;
+  --hm-pink-deep: #D94A5A;
+  --hm-pink-soft: #F7C2C9;
+  --hm-pink-tint: #FDEBED;
+
+  --hm-yellow: #F4B232;
+  --hm-yellow-deep: #E89A10;
+  --hm-yellow-soft: #FBE3A8;
+  --hm-yellow-tint: #FEF6E0;
+
+  --hm-mint: #35BE92;
+  --hm-mint-deep: #1D9E76;
+  --hm-mint-soft: #A4E6CE;
+  --hm-mint-tint: #E3F7EE;
+
+  --hm-navy: #0F3A48;           /* primary text / headlines */
+  --hm-navy-2: #1A5567;         /* secondary text */
+  --hm-ink: #0A252F;            /* near-black */
+
+  --hm-cream: #FFF8EA;          /* warm page background */
+  --hm-paper: #FFFFFF;
+  --hm-muted: #6B8390;
+  --hm-border: #E8DFCC;
+
+  /* Semantic */
+  --bg-page: var(--hm-cream);
+  --bg-card: var(--hm-paper);
+  --fg-1: var(--hm-navy);
+  --fg-2: var(--hm-navy-2);
+  --fg-3: var(--hm-muted);
+  --accent: var(--hm-pink);
+
+  /* Type */
+  --font-display: 'Onest', system-ui, sans-serif;
+  --font-body: 'Onest', system-ui, sans-serif;
+  --font-accent: 'Caveat', cursive;       /* for playful doodle labels */
+  --font-serif: 'Fraunces', serif;        /* optional editorial accent */
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-2xl: 36px;
+  --r-pill: 9999px;
+
+  /* Shadows */
+  --sh-sm: 0 2px 6px rgba(15, 58, 72, 0.06);
+  --sh-md: 0 10px 24px rgba(15, 58, 72, 0.08);
+  --sh-lg: 0 22px 50px rgba(15, 58, 72, 0.12);
+  --sh-pop: 0 6px 0 0 rgba(15, 58, 72, 0.14);  /* hard shadow for poster vibe */
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Dark mode — swapped neutrals, brand colors stay saturated */
+[data-theme="dark"] {
+  --bg-page: #0B1E26;
+  --bg-card: #112B35;
+  --fg-1: #F4EFE0;
+  --fg-2: #D1DCE2;
+  --fg-3: #8FA3AC;
+  --hm-cream: #0B1E26;
+  --hm-paper: #112B35;
+  --hm-border: #1E3B47;
+  --hm-navy: #F4EFE0;
+  --hm-navy-2: #D1DCE2;
+  --sh-sm: 0 2px 6px rgba(0,0,0,0.3);
+  --sh-md: 0 10px 24px rgba(0,0,0,0.4);
+  --sh-lg: 0 22px 50px rgba(0,0,0,0.5);
+  --sh-pop: 0 6px 0 0 rgba(0,0,0,0.4);
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--fg-1);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  color: var(--fg-1);
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.05;
+  font-weight: 800;
+}
+
+p { margin: 0; color: var(--fg-2); }
+
+::selection { background: var(--hm-yellow); color: var(--hm-navy); }
+
+/* Utility buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: var(--r-pill);
+  font-weight: 700;
+  font-size: 15px;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), background 0.2s;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: var(--hm-pink);
+  color: white;
+  box-shadow: var(--sh-pop);
+}
+.btn-primary:hover { background: var(--hm-pink-deep); }
+
+.btn-secondary {
+  background: var(--hm-navy);
+  color: var(--hm-cream);
+}
+[data-theme="dark"] .btn-secondary {
+  background: var(--hm-yellow);
+  color: var(--hm-ink);
+}
+
+.btn-yellow {
+  background: var(--hm-yellow);
+  color: var(--hm-navy);
+  box-shadow: var(--sh-pop);
+}
+.btn-yellow:hover { background: var(--hm-yellow-deep); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--fg-1);
+  border: 2px solid var(--hm-navy);
+}
+[data-theme="dark"] .btn-ghost { border-color: var(--fg-1); }
+
+.btn-sm { padding: 10px 18px; font-size: 14px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--hm-paper);
+  color: var(--hm-navy);
+  border: 1.5px solid var(--hm-border);
+}
+.chip-pink { background: var(--hm-pink); color: white; border-color: transparent; }
+.chip-yellow { background: var(--hm-yellow); color: var(--hm-navy); border-color: transparent; }
+.chip-mint { background: var(--hm-mint); color: white; border-color: transparent; }
+
+/* Container */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* Section head pattern */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-accent);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--hm-pink);
+  transform: rotate(-2deg);
+}
+
+.section-title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--fg-1);
+  margin-top: 8px;
+}
+
+/* Yellow/pink/mint highlight pills (matching poster) */
+.hl-pill {
+  display: inline-block;
+  padding: 0 14px;
+  border-radius: 14px;
+  white-space: nowrap;
+}
+.hl-yellow { background: var(--hm-yellow); color: var(--hm-navy); }
+.hl-pink   { background: var(--hm-pink);   color: white; }
+.hl-mint   { background: var(--hm-mint);   color: white; }
+
+/* Hide scrollbar on horizontal scrollers */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Shapes (organic blobs) */
+.shape {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 3px solid var(--hm-pink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Sticky note scribble marks (the "???" squiggles in poster) */
+.scribble {
+  font-family: var(--font-accent);
+  color: var(--hm-navy);
+  font-weight: 700;
+  transform: rotate(-12deg);
+  display: inline-block;
+}
+
+/* ============================================================
+   HelloMotion — Page Layout & Sections
+   ============================================================ */
+
+/* ─── NAV ─────────────────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 14px 0;
+  transition: background 0.3s, backdrop-filter 0.3s, box-shadow 0.3s;
+}
+.nav--scrolled {
+  background: color-mix(in oklab, var(--bg-page) 82%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--hm-border);
+}
+.nav__inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.nav__brand { display: flex; align-items: center; gap: 12px; }
+.nav__logomark { display: inline-flex; }
+.nav__wordmark { display: flex; flex-direction: column; line-height: 1; }
+.nav__wordmark strong { font-size: 18px; font-weight: 800; color: var(--fg-1); letter-spacing: -0.02em; }
+.nav__wordmark small { font-size: 11px; color: var(--fg-3); font-weight: 500; margin-top: 3px; }
+
+.nav__links { display: flex; align-items: center; gap: 4px; }
+.nav__link {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg-2);
+  border-radius: var(--r-pill);
+  transition: background 0.2s, color 0.2s;
+}
+.nav__link:hover { background: var(--hm-yellow-tint); color: var(--fg-1); }
+.nav__cta { margin-left: 10px; }
+.nav__burger { display: none; flex-direction: column; gap: 5px; width: 40px; height: 40px; justify-content: center; align-items: center; }
+.nav__burger span { display: block; width: 22px; height: 2.5px; background: var(--fg-1); border-radius: 2px; }
+
+@media (max-width: 880px) {
+  .nav__burger { display: flex; }
+  .nav__links {
+    position: absolute; top: 68px; left: 12px; right: 12px;
+    flex-direction: column; align-items: stretch; gap: 4px;
+    padding: 14px; border-radius: var(--r-xl);
+    background: var(--bg-card); box-shadow: var(--sh-lg);
+    transform: translateY(-8px); opacity: 0; pointer-events: none;
+    transition: transform 0.25s, opacity 0.25s;
+  }
+  .nav__links--open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .nav__link { text-align: left; padding: 12px 16px; }
+  .nav__cta { margin: 4px 0 0 0; justify-content: center; }
+  .nav__wordmark small { display: none; }
+}
+
+/* ─── HERO ────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  padding: 130px 0 60px;
+  overflow: hidden;
+}
+.hero__shapes { position: absolute; inset: 0; pointer-events: none; }
+.blob { position: absolute; border-radius: 50%; filter: blur(0.5px); }
+.blob--mint   { top: 90px;  left: -120px; width: 280px; height: 280px; background: var(--hm-mint); opacity: 0.85; }
+.blob--pink   { top: 40%;   right: -100px; width: 340px; height: 340px; background: var(--hm-pink); opacity: 0.18; }
+.blob--yellow { bottom: 40px; left: 38%; width: 180px; height: 180px; background: var(--hm-yellow); opacity: 0.55; }
+
+.squiggle { position: absolute; width: 80px; height: 40px; }
+.squiggle--1 { top: 150px; right: 8%; transform: rotate(-8deg); }
+.squiggle--2 { bottom: 18%; left: 6%; width: 60px; height: 60px; transform: rotate(6deg); }
+
+.star { position: absolute; font-size: 36px; color: var(--hm-pink); font-weight: 900; }
+.star--1 { top: 22%; left: 44%; transform: rotate(12deg); color: var(--hm-yellow); }
+.star--2 { top: 55%; right: 6%; font-size: 28px; color: var(--hm-mint); }
+
+.hero__grid {
+  position: relative; z-index: 2;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 960px) { .hero__grid { grid-template-columns: 1fr; gap: 40px; } }
+
+.hero__badge { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.badge-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: var(--r-pill);
+  background: var(--hm-navy); color: var(--hm-cream);
+  font-size: 13px; font-weight: 600;
+}
+[data-theme="dark"] .badge-pill { background: var(--hm-yellow); color: var(--hm-ink); }
+.hero__scribble { font-size: 26px; color: var(--hm-pink); }
+
+.hero__headline {
+  font-size: clamp(44px, 7.2vw, 88px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  display: flex; flex-wrap: wrap; gap: 8px 14px;
+}
+.hero__headline span { display: inline-block; }
+.hero__headline em { font-style: normal; }
+
+.hero__sub {
+  margin-top: 24px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--fg-2);
+  max-width: 560px;
+}
+.hero__sub strong { color: var(--fg-1); font-weight: 700; }
+
+.hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+
+.hero__stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 44px;
+  padding-top: 28px;
+  border-top: 2px dashed var(--hm-border);
+}
+.hero__stat { display: flex; flex-direction: column; gap: 4px; }
+.hero__stat strong { font-size: 32px; font-weight: 900; color: var(--hm-pink); letter-spacing: -0.03em; }
+.hero__stat span { font-size: 13px; color: var(--fg-3); font-weight: 500; }
+
+/* Hero visual */
+.hero__visual { position: relative; }
+.hero__photo-wrap {
+  position: relative;
+  aspect-ratio: 4/5;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.hero__photo-bg {
+  position: absolute; inset: 0;
+  background: var(--hm-yellow);
+  border-radius: 45% 55% 60% 40% / 50% 45% 55% 50%;
+  transform: rotate(-4deg);
+}
+.hero__photo {
+  position: relative;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 45% 55% 60% 40% / 50% 45% 55% 50%;
+  filter: saturate(1.05) contrast(1.02);
+}
+.hero__chip {
+  position: absolute;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px;
+  background: var(--bg-card);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-lg);
+  z-index: 3;
+}
+.hero__chip i { font-size: 22px; color: var(--hm-pink); }
+.hero__chip small { display: block; font-size: 11px; color: var(--fg-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.hero__chip strong { display: block; font-size: 13px; color: var(--fg-1); font-weight: 700; margin-top: 2px; }
+.hero__chip--1 { top: 8%; left: -8%; animation: floaty 6s ease-in-out infinite; }
+.hero__chip--2 { bottom: 12%; right: -6%; animation: floaty 6s ease-in-out infinite 3s; }
+.hero__chip--2 i { color: var(--hm-mint); }
+.hero__pill {
+  position: absolute; top: -14px; right: 18%;
+  background: var(--hm-pink); color: white;
+  padding: 6px 16px; border-radius: var(--r-pill);
+  font-weight: 700; font-size: 13px;
+  transform: rotate(6deg);
+  box-shadow: var(--sh-pop);
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Marquee */
+.marquee {
+  position: relative; z-index: 2;
+  margin-top: 60px;
+  padding: 14px 0;
+  background: var(--hm-navy);
+  color: var(--hm-cream);
+  overflow: hidden;
+  transform: rotate(-1.5deg);
+  margin-left: -20px; margin-right: -20px;
+}
+[data-theme="dark"] .marquee { background: var(--hm-yellow); color: var(--hm-ink); }
+.marquee__track {
+  display: flex;
+  animation: marquee 40s linear infinite;
+  width: max-content;
+}
+.marquee__group {
+  display: flex; gap: 40px; padding-right: 40px;
+  font-weight: 700; font-size: 18px;
+  white-space: nowrap;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.333%); }
+}
+
+/* ─── SECTION BASE ─────────────────────────────────────── */
+.section { padding: 100px 0; position: relative; }
+
+/* Stitch divider (per sketch tips) */
+.stitch {
+  height: 2px;
+  background-image: linear-gradient(to right, var(--hm-navy) 60%, transparent 40%);
+  background-size: 16px 2px;
+  background-repeat: repeat-x;
+  opacity: 0.25;
+  margin: 0 auto;
+  max-width: 1240px;
+}
+
+/* ─── CURRICULUM / DOUBLE DIPLOMA ──────────────────────── */
+.curriculum { background: var(--hm-pink-tint); border-radius: 0; }
+[data-theme="dark"] .curriculum { background: color-mix(in oklab, var(--hm-pink) 18%, var(--bg-page)); }
+
+.curriculum__grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+@media (max-width: 900px) { .curriculum__grid { grid-template-columns: 1fr; gap: 40px; } }
+
+.diploma-stack { position: relative; padding: 20px; }
+.diploma {
+  background: var(--bg-card);
+  border-radius: var(--r-xl);
+  padding: 28px 30px;
+  box-shadow: var(--sh-lg);
+  border: 2px solid var(--hm-navy);
+  position: relative;
+}
+.diploma + .diploma { margin-top: -30px; margin-left: 40px; }
+.diploma__ribbon {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--hm-pink); color: white;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+.diploma--2 .diploma__ribbon { background: var(--hm-yellow); color: var(--hm-navy); }
+.diploma h4 { font-size: 22px; margin: 0 0 6px; }
+.diploma p { font-size: 14px; color: var(--fg-3); }
+.diploma__seal {
+  position: absolute; right: 20px; bottom: 20px;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: var(--hm-mint); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-accent);
+  font-size: 22px; font-weight: 700;
+  transform: rotate(-12deg);
+  border: 2px dashed white;
+  box-shadow: 0 0 0 2px var(--hm-mint);
+}
+
+.curr-list { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 14px; }
+.curr-list li {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 18px; background: var(--bg-card);
+  border-radius: var(--r-lg);
+  border: 1.5px solid var(--hm-border);
+}
+.curr-list li .dot {
+  flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; color: white; font-size: 14px;
+}
+.curr-list li:nth-child(1) .dot { background: var(--hm-pink); }
+.curr-list li:nth-child(2) .dot { background: var(--hm-yellow); color: var(--hm-navy); }
+.curr-list li:nth-child(3) .dot { background: var(--hm-mint); }
+.curr-list li:nth-child(4) .dot { background: var(--hm-navy); }
+.curr-list li strong { display: block; font-size: 15px; color: var(--fg-1); font-weight: 700; }
+.curr-list li small { display: block; font-size: 13px; color: var(--fg-3); margin-top: 2px; }
+
+/* ─── CREATIVE FACTORY ─────────────────────────────────── */
+.factory { background: var(--hm-navy); color: var(--hm-cream); overflow: hidden; }
+.factory .section-title, .factory .section-eyebrow { color: var(--hm-cream); }
+.factory .section-eyebrow { color: var(--hm-yellow); }
+[data-theme="dark"] .factory { background: color-mix(in oklab, var(--hm-navy) 55%, black); }
+
+.factory__head { max-width: 700px; }
+.factory__head p { color: color-mix(in oklab, var(--hm-cream) 75%, transparent); font-size: 17px; margin-top: 20px; }
+
+.factory__grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) { .factory__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .factory__grid { grid-template-columns: 1fr; } }
+
+.factory-card {
+  background: color-mix(in oklab, var(--hm-cream) 8%, transparent);
+  border: 1.5px solid color-mix(in oklab, var(--hm-cream) 20%, transparent);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  transition: transform 0.25s var(--ease-out), background 0.25s;
+  position: relative; overflow: hidden;
+}
+.factory-card:hover { transform: translateY(-6px); background: color-mix(in oklab, var(--hm-cream) 14%, transparent); }
+.factory-card__icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+.factory-card:nth-child(1) .factory-card__icon { background: var(--hm-pink); color: white; }
+.factory-card:nth-child(2) .factory-card__icon { background: var(--hm-yellow); color: var(--hm-navy); }
+.factory-card:nth-child(3) .factory-card__icon { background: var(--hm-mint); color: white; }
+.factory-card:nth-child(4) .factory-card__icon { background: var(--hm-cream); color: var(--hm-navy); }
+
+.factory-card h4 { font-size: 20px; margin: 0 0 8px; color: var(--hm-cream); }
+.factory-card p { font-size: 14px; color: color-mix(in oklab, var(--hm-cream) 70%, transparent); line-height: 1.5; }
+.factory-card__num {
+  position: absolute; top: 16px; right: 20px;
+  font-size: 14px; font-weight: 800; opacity: 0.35;
+}
+.factory__benefit {
+  margin-top: 40px; padding: 24px 28px;
+  background: var(--hm-yellow); color: var(--hm-navy);
+  border-radius: var(--r-xl);
+  display: flex; align-items: center; gap: 18px;
+  font-weight: 600; font-size: 16px;
+}
+.factory__benefit i { font-size: 28px; }
+
+/* ─── MAPEL (SUBJECTS) ─────────────────────────────────── */
+.subjects__split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  margin-top: 56px;
+}
+@media (max-width: 900px) { .subjects__split { grid-template-columns: 1fr; } }
+
+.subject-col {
+  background: var(--bg-card);
+  border-radius: var(--r-2xl);
+  padding: 36px;
+  border: 2px solid var(--hm-border);
+  position: relative;
+}
+.subject-col--creative { background: var(--hm-pink); color: white; border-color: var(--hm-pink-deep); }
+.subject-col--academic { background: var(--hm-mint); color: white; border-color: var(--hm-mint-deep); }
+.subject-col h3 { color: inherit; font-size: 28px; margin: 0 0 8px; }
+.subject-col p { color: color-mix(in oklab, white 80%, transparent); font-size: 15px; margin-bottom: 24px; }
+.subject-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.subject-col ul li {
+  padding: 10px 16px;
+  background: color-mix(in oklab, white 18%, transparent);
+  color: white;
+  border-radius: var(--r-pill);
+  font-weight: 600; font-size: 14px;
+  backdrop-filter: blur(4px);
+}
+.subject-col__label {
+  display: inline-block; padding: 4px 12px;
+  background: rgba(255,255,255,0.25); color: white;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  border-radius: 4px; margin-bottom: 14px; text-transform: uppercase;
+}
+.subject-col__tagline {
+  margin-top: 24px; padding: 14px 16px;
+  background: rgba(255,255,255,0.15);
+  border-radius: var(--r-md);
+  font-size: 14px; font-weight: 600; color: white;
+  display: flex; align-items: center; gap: 10px;
+}
+
+/* ─── LIFE AT HELLOMOTION ──────────────────────────────── */
+.life { background: var(--hm-yellow-tint); }
+[data-theme="dark"] .life { background: color-mix(in oklab, var(--hm-yellow) 14%, var(--bg-page)); }
+
+.life__grid {
+  margin-top: 56px;
+  display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 20px;
+  grid-template-rows: 280px 280px;
+}
+@media (max-width: 900px) {
+  .life__grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+}
+@media (max-width: 600px) {
+  .life__grid { grid-template-columns: 1fr; }
+}
+
+.life-tile {
+  border-radius: var(--r-xl);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+.life-tile--classroom { grid-row: span 2; background: var(--hm-pink); color: white; }
+.life-tile--uniform { background: var(--hm-navy); color: white; }
+.life-tile--ipad { background: var(--hm-mint); color: white; }
+.life-tile--asrama { background: var(--bg-card); color: var(--fg-1); grid-column: span 2; padding: 0; flex-direction: row; }
+@media (max-width: 900px) { .life-tile--asrama { flex-direction: column; grid-column: auto; } .life-tile--classroom { grid-row: auto; } }
+
+.life-tile h4 { font-size: 22px; margin: 0 0 6px; color: inherit; }
+.life-tile p { font-size: 14px; color: color-mix(in oklab, currentColor 70%, transparent); }
+.life-tile__icon {
+  position: absolute; top: 24px; right: 24px;
+  font-size: 40px; opacity: 0.8;
+}
+.life-tile__tag {
+  position: absolute; top: 24px; left: 24px;
+  font-family: var(--font-accent); font-size: 20px;
+  transform: rotate(-6deg); color: inherit; opacity: 0.85;
+}
+.life-tile--asrama img { width: 45%; height: 100%; object-fit: cover; }
+@media (max-width: 900px) { .life-tile--asrama img { width: 100%; height: 180px; } }
+.life-tile--asrama .asrama-body { padding: 28px; display: flex; flex-direction: column; justify-content: center; flex: 1; }
+
+/* ─── ALUMNI / PRESTASI ────────────────────────────────── */
+.alumni__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; margin-bottom: 48px; }
+
+.achievement-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+  margin-bottom: 56px;
+}
+@media (max-width: 900px) { .achievement-strip { grid-template-columns: repeat(2, 1fr); } }
+
+.ach-card {
+  padding: 24px; border-radius: var(--r-lg);
+  background: var(--bg-card);
+  border: 1.5px solid var(--hm-border);
+  text-align: left;
+}
+.ach-card__medal {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 16px;
+}
+.ach-card:nth-child(1) .ach-card__medal { background: var(--hm-yellow); color: var(--hm-navy); }
+.ach-card:nth-child(2) .ach-card__medal { background: var(--hm-pink); color: white; }
+.ach-card:nth-child(3) .ach-card__medal { background: var(--hm-mint); color: white; }
+.ach-card:nth-child(4) .ach-card__medal { background: var(--hm-navy); color: var(--hm-cream); }
+.ach-card h5 { font-size: 18px; margin: 0 0 6px; }
+.ach-card p { font-size: 13px; color: var(--fg-3); }
+.ach-card__year { font-size: 12px; font-weight: 700; color: var(--hm-pink); margin-top: 10px; display: inline-block; }
+
+/* Testimoni */
+.testi__grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+@media (max-width: 900px) { .testi__grid { grid-template-columns: 1fr; } }
+
+.testi-card {
+  background: var(--bg-card);
+  border-radius: var(--r-2xl);
+  padding: 28px;
+  border: 1.5px solid var(--hm-border);
+  position: relative;
+}
+.testi-card:nth-child(2) { background: var(--hm-mint); color: white; border-color: var(--hm-mint-deep); }
+.testi-card:nth-child(2) .testi-card__quote,
+.testi-card:nth-child(2) .testi-card__who strong,
+.testi-card:nth-child(2) .testi-card__who small { color: inherit; }
+.testi-card:nth-child(2) .testi-card__who small { opacity: 0.75; }
+
+.testi-card__marks {
+  font-family: var(--font-serif);
+  font-size: 60px; line-height: 0.6;
+  color: var(--hm-pink);
+  margin-bottom: 8px;
+}
+.testi-card:nth-child(2) .testi-card__marks { color: var(--hm-yellow); }
+.testi-card__quote { font-size: 15px; line-height: 1.6; color: var(--fg-2); }
+.testi-card__who {
+  margin-top: 22px; display: flex; align-items: center; gap: 12px;
+  padding-top: 20px; border-top: 1.5px dashed var(--hm-border);
+}
+.testi-card:nth-child(2) .testi-card__who { border-top-color: rgba(255,255,255,0.3); }
+.testi-card__avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--hm-yellow); color: var(--hm-navy);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 16px;
+  flex-shrink: 0;
+}
+.testi-card__who strong { display: block; font-size: 14px; color: var(--fg-1); font-weight: 700; }
+.testi-card__who small { display: block; font-size: 12px; color: var(--fg-3); }
+
+/* ─── ALUR PPDB (timeline) ─────────────────────────────── */
+.alur { background: var(--hm-mint-tint); }
+[data-theme="dark"] .alur { background: color-mix(in oklab, var(--hm-mint) 16%, var(--bg-page)); }
+
+.timeline {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
+  margin-top: 56px;
+  position: relative;
+}
+@media (max-width: 900px) { .timeline { grid-template-columns: 1fr; } }
+
+.timeline::before {
+  content: ''; position: absolute;
+  top: 32px; left: 5%; right: 5%; height: 3px;
+  background-image: linear-gradient(to right, var(--hm-navy) 55%, transparent 45%);
+  background-size: 12px 3px;
+  z-index: 0;
+}
+@media (max-width: 900px) { .timeline::before { display: none; } }
+
+.tl-step { position: relative; z-index: 1; text-align: center; padding: 0 8px; }
+.tl-step__num {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--bg-card); border: 3px solid var(--hm-navy);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 900;
+  color: var(--hm-navy);
+  margin: 0 auto 16px;
+  box-shadow: var(--sh-pop);
+}
+.tl-step:nth-child(1) .tl-step__num { background: var(--hm-pink); color: white; border-color: var(--hm-pink-deep); }
+.tl-step:nth-child(2) .tl-step__num { background: var(--hm-yellow); border-color: var(--hm-yellow-deep); }
+.tl-step:nth-child(3) .tl-step__num { background: var(--hm-mint); color: white; border-color: var(--hm-mint-deep); }
+.tl-step:nth-child(4) .tl-step__num { background: var(--bg-card); }
+.tl-step:nth-child(5) .tl-step__num { background: var(--hm-navy); color: var(--hm-cream); }
+
+.tl-step h5 { font-size: 15px; margin: 0 0 6px; }
+.tl-step p { font-size: 13px; color: var(--fg-3); line-height: 1.5; }
+
+/* ─── FAQ ──────────────────────────────────────────────── */
+.faq__wrap { max-width: 820px; margin: 56px auto 0; display: grid; gap: 14px; }
+.faq-item {
+  background: var(--bg-card);
+  border: 2px solid var(--hm-border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item.open { border-color: var(--hm-pink); }
+.faq-item__q {
+  width: 100%; text-align: left;
+  padding: 22px 24px;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  font-size: 16px; font-weight: 700; color: var(--fg-1);
+}
+.faq-item__q i { color: var(--hm-pink); transition: transform 0.3s; font-size: 22px; }
+.faq-item.open .faq-item__q i { transform: rotate(45deg); }
+.faq-item__a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  padding: 0 24px;
+}
+.faq-item.open .faq-item__a { max-height: 400px; padding: 0 24px 22px; }
+.faq-item__a p { font-size: 15px; color: var(--fg-2); line-height: 1.6; }
+
+/* ─── DAFTAR (enroll form) ─────────────────────────────── */
+.daftar { background: var(--hm-pink); color: white; overflow: hidden; position: relative; }
+.daftar__shapes { position: absolute; inset: 0; pointer-events: none; }
+.daftar__shapes .s { position: absolute; border-radius: 50%; }
+.daftar .section-eyebrow { color: var(--hm-yellow); }
+.daftar .section-title { color: white; }
+
+.daftar__grid {
+  display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px;
+  align-items: start;
+  position: relative; z-index: 2;
+}
+@media (max-width: 900px) { .daftar__grid { grid-template-columns: 1fr; gap: 40px; } }
+
+.daftar__promo { color: white; }
+.daftar__promo h2 { color: white; }
+.daftar__promo-highlights {
+  margin-top: 28px; display: grid; gap: 14px;
+}
+.promo-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(6px);
+  border-radius: var(--r-lg);
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+.promo-row__icon {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: var(--hm-yellow); color: var(--hm-navy);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.promo-row strong { font-size: 15px; color: white; font-weight: 700; display: block; }
+.promo-row small { font-size: 13px; color: rgba(255,255,255,0.8); display: block; margin-top: 2px; }
+
+.form-card {
+  background: var(--bg-card);
+  color: var(--fg-1);
+  padding: 36px;
+  border-radius: var(--r-2xl);
+  box-shadow: var(--sh-lg);
+}
+.form-card h3 { font-size: 24px; margin: 0 0 6px; }
+.form-card > p { font-size: 14px; color: var(--fg-3); margin-bottom: 24px; }
+
+.form-row { display: grid; gap: 14px; margin-bottom: 14px; }
+.form-row--2 { grid-template-columns: 1fr 1fr; }
+@media (max-width: 520px) { .form-row--2 { grid-template-columns: 1fr; } }
+
+.field label {
+  display: block;
+  font-size: 13px; font-weight: 600;
+  color: var(--fg-2); margin-bottom: 6px;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--fg-1);
+  background: var(--bg-page);
+  border: 1.5px solid var(--hm-border);
+  border-radius: var(--r-md);
+  transition: border-color 0.2s, background 0.2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--hm-pink);
+  background: var(--bg-card);
+}
+.field.error input, .field.error select { border-color: var(--hm-pink-deep); background: var(--hm-pink-tint); }
+.field__err { font-size: 12px; color: var(--hm-pink-deep); margin-top: 4px; font-weight: 600; }
+
+.form-submit {
+  width: 100%; margin-top: 10px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 800;
+  background: var(--hm-navy); color: var(--hm-cream);
+  border-radius: var(--r-pill);
+  transition: background 0.2s, transform 0.2s;
+}
+.form-submit:hover { background: var(--hm-ink); transform: translateY(-2px); }
+
+.form-success {
+  text-align: center; padding: 40px 20px;
+}
+.form-success__icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--hm-mint); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; margin: 0 auto 20px;
+  animation: pop 0.5s var(--ease-out);
+}
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.form-success h4 { font-size: 22px; margin-bottom: 6px; }
+.form-success p { font-size: 14px; color: var(--fg-3); }
+
+/* ─── FOOTER ───────────────────────────────────────────── */
+.footer {
+  background: var(--hm-navy);
+  color: var(--hm-cream);
+  padding: 80px 0 40px;
+  position: relative;
+}
+.footer__grid {
+  display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 40px;
+}
+@media (max-width: 900px) { .footer__grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 540px) { .footer__grid { grid-template-columns: 1fr; } }
+
+.footer__brand { max-width: 340px; }
+.footer__brand h4 { color: var(--hm-cream); font-size: 22px; margin-bottom: 10px; }
+.footer__brand p { color: rgba(255,248,234,0.65); font-size: 14px; line-height: 1.6; }
+
+.footer__social { display: flex; gap: 10px; margin-top: 20px; }
+.footer__social a {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.1); color: var(--hm-cream);
+  font-size: 18px;
+  transition: background 0.2s, transform 0.2s;
+}
+.footer__social a:hover { background: var(--hm-pink); transform: translateY(-3px); }
+
+.footer__col h5 { color: var(--hm-yellow); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; font-weight: 800; }
+.footer__col a, .footer__col p {
+  display: block; color: rgba(255,248,234,0.75); font-size: 14px;
+  padding: 6px 0;
+  transition: color 0.2s;
+}
+.footer__col a:hover { color: var(--hm-yellow); }
+
+.footer__copy {
+  margin-top: 56px; padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  color: rgba(255,248,234,0.5);
+  font-size: 13px;
+}
+
+/* ─── Floating WA button ───────────────────────────────── */
+.fab-wa {
+  position: fixed;
+  bottom: 22px; right: 22px;
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background: #25D366;
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45);
+  z-index: 90;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: pulse-wa 2.2s infinite;
+}
+.fab-wa:hover { transform: scale(1.08); }
+@keyframes pulse-wa {
+  0%, 100% { box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45), 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  70% { box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45), 0 0 0 18px rgba(37, 211, 102, 0); }
+}
+
+/* ─── Tweaks panel ─────────────────────────────────────── */
+.tweaks {
+  position: fixed; right: 22px; bottom: 100px;
+  width: 300px;
+  background: var(--bg-card);
+  color: var(--fg-1);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-lg);
+  border: 1.5px solid var(--hm-border);
+  z-index: 95;
+  overflow: hidden;
+  animation: slideUp 0.25s var(--ease-out);
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.tweaks__head {
+  padding: 16px 18px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--hm-navy); color: var(--hm-cream);
+}
+.tweaks__head strong { font-size: 14px; font-weight: 800; letter-spacing: 0.02em; }
+.tweaks__head button { color: var(--hm-cream); font-size: 18px; padding: 4px; }
+.tweaks__body { padding: 18px; display: grid; gap: 18px; }
+.tweak-row label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-3); display: block; margin-bottom: 8px; }
+.swatches { display: flex; gap: 8px; }
+.swatch {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2.5px solid transparent;
+  cursor: pointer; transition: transform 0.15s;
+}
+.swatch.is-active { border-color: var(--fg-1); transform: scale(1.1); }
+.toggle-row { display: flex; justify-content: space-between; align-items: center; }
+.toggle-row span { font-size: 13px; font-weight: 600; color: var(--fg-2); }
+.toggle {
+  width: 44px; height: 24px; border-radius: 12px;
+  background: var(--hm-border); position: relative;
+  transition: background 0.2s; cursor: pointer;
+}
+.toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: white; transition: transform 0.2s;
+  box-shadow: var(--sh-sm);
+}
+.toggle.is-on { background: var(--hm-pink); }
+.toggle.is-on::after { transform: translateX(20px); }
+
+/* ─── Animations ───────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s, transform 0.7s; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ─── Responsive tweaks ────────────────────────────────── */
+@media (max-width: 640px) {
+  .section { padding: 70px 0; }
+  .hero { padding: 110px 0 40px; }
+  .hero__stats { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .hero__chip--1, .hero__chip--2 { transform: scale(0.85); }
+  .container { padding: 0 20px; }
+}
+
+</style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.26.6/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+<script type="text/babel" data-presets="react">
+
+/* ── Nav ─────────────────────────────────────── */
+const Nav = ({ onOpenTweaks }) => {
+  const [scrolled, setScrolled] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const links = [
+    ['Tentang', 'about'],
+    ['Kurikulum', 'curriculum'],
+    ['Creative Factory', 'factory'],
+    ['Kehidupan', 'life'],
+    ['Alumni', 'alumni'],
+    ['FAQ', 'faq'],
+  ];
+
+  const go = (id) => {
+    setOpen(false);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
+    <nav className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
+      <div className="nav__inner container">
+        <a className="nav__brand" href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+          <span className="nav__logomark">
+            <svg viewBox="0 0 40 40" width="40" height="40">
+              <circle cx="20" cy="20" r="19" fill="var(--hm-yellow)" />
+              <circle cx="14" cy="17" r="2.2" fill="var(--hm-navy)" />
+              <circle cx="26" cy="17" r="2.2" fill="var(--hm-navy)" />
+              <path d="M13 24 Q20 30 27 24" stroke="var(--hm-navy)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            </svg>
+          </span>
+          <span className="nav__wordmark">
+            <strong>HelloMotion</strong>
+            <small>High School Malang</small>
+          </span>
+        </a>
+
+        <div className={`nav__links ${open ? 'nav__links--open' : ''}`}>
+          {links.map(([label, id]) => (
+            <button key={id} className="nav__link" onClick={() => go(id)}>{label}</button>
+          ))}
+          <button className="btn btn-primary btn-sm nav__cta" onClick={() => go('daftar')}>
+            Daftar PPDB <i className="bi bi-arrow-right"></i>
+          </button>
+        </div>
+
+        <button className="nav__burger" onClick={() => setOpen(o => !o)} aria-label="menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  );
+};
+
+/* ── Hero ─────────────────────────────────────── */
+const Hero = () => {
+  const go = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <section id="top" className="hero">
+      <div className="hero__shapes" aria-hidden="true">
+        <div className="blob blob--mint"></div>
+        <div className="blob blob--pink"></div>
+        <div className="blob blob--yellow"></div>
+        <svg className="squiggle squiggle--1" viewBox="0 0 80 40">
+          <path d="M2 20 Q12 2 22 20 T42 20 T62 20 T82 20" stroke="var(--hm-navy)" strokeWidth="3" fill="none" strokeLinecap="round"/>
+        </svg>
+        <svg className="squiggle squiggle--2" viewBox="0 0 60 60">
+          <path d="M10 40 Q14 20 24 24 Q30 26 28 36 Q26 46 34 48" stroke="var(--hm-navy)" strokeWidth="3" fill="none" strokeLinecap="round"/>
+        </svg>
+        <div className="star star--1">★</div>
+        <div className="star star--2">✦</div>
+      </div>
+
+      <div className="container hero__grid">
+        <div className="hero__copy">
+          <div className="hero__badge">
+            <span className="badge-pill">
+              <i className="bi bi-stars"></i> PPDB Tahun Ajaran 2026/2027
+            </span>
+            <span className="scribble hero__scribble">dibuka!</span>
+          </div>
+
+          <h1 className="hero__headline">
+            <span>MORE</span>
+            <span>THAN</span>
+            <span>JUST</span>
+            <span><em className="hl-pill hl-pink">HIGH</em></span>
+            <span><em className="hl-pill hl-yellow">SCHOOL!</em></span>
+            <span style={{fontSize: '0.85em'}}>🚀</span>
+          </h1>
+
+          <p className="hero__sub">
+            Lagi nyari SMA yang bisa mengasah kreativitasmu tapi tetap nggak ketinggalan pelajaran umum?
+            <strong> HelloMotion High School Malang jawabannya.</strong> Di sini kamu bisa belajar Film Making,
+            Desain Grafis, Ilustrasi, Fotografi, dan banyak lagi — dengan kurikulum yang berpusat pada kebutuhanmu.
+          </p>
+
+          <div className="hero__ctas">
+            <button className="btn btn-primary" onClick={() => go('daftar')}>
+              Daftar Sekarang — Gratis Biaya Formulir! <i className="bi bi-arrow-right"></i>
+            </button>
+            <button className="btn btn-ghost" onClick={() => go('curriculum')}>
+              <i className="bi bi-play-circle"></i> Lihat Program
+            </button>
+          </div>
+
+          <div className="hero__stats">
+            <div className="hero__stat">
+              <strong>2</strong>
+              <span>Ijazah resmi sekaligus</span>
+            </div>
+            <div className="hero__stat">
+              <strong>25%</strong>
+              <span>Diskon SPP gelombang 1</span>
+            </div>
+            <div className="hero__stat">
+              <strong>1:1</strong>
+              <span>Siswa &amp; iPad pribadi</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="hero__visual">
+          <div className="hero__photo-wrap">
+            <div className="hero__photo-bg"></div>
+            <img src="assets/students.png" alt="Siswa HelloMotion" className="hero__photo" />
+            <div className="hero__chip hero__chip--1">
+              <i className="bi bi-lightning-charge-fill"></i>
+              <div>
+                <small>Gelombang 1</small>
+                <strong>Dibuka s/d 30 Juni 2026</strong>
+              </div>
+            </div>
+            <div className="hero__chip hero__chip--2">
+              <i className="bi bi-mortarboard-fill"></i>
+              <div>
+                <small>Kuota terbatas</small>
+                <strong>Hanya 96 siswa baru</strong>
+              </div>
+            </div>
+            <div className="hero__pill">✨ Est. 2019</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="marquee">
+        <div className="marquee__track">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="marquee__group">
+              <span>★ 21<sup>st</sup> Century Skill</span>
+              <span>★ Design Thinking</span>
+              <span>★ STEAM</span>
+              <span>★ Project Based Learning</span>
+              <span>★ Creative Factory</span>
+              <span>★ Double Diploma</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Curriculum ─────────────────────────────────────── */
+const Curriculum = () => {
+  const items = [
+    { t: 'Keterampilan Abad 21', d: '4C: Critical thinking, Communication, Collaboration, Creativity' },
+    { t: 'Design Thinking', d: 'Empati → Ideasi → Prototipe → Tes — terintegrasi di semua mapel' },
+    { t: 'STEAM', d: 'Science, Tech, Engineering, Arts & Math dalam proyek lintas disiplin' },
+    { t: 'Project Based Learning', d: 'Belajar lewat proyek nyata, output nyata, dampak nyata' },
+  ];
+  return (
+    <section id="curriculum" className="section curriculum">
+      <div className="container curriculum__grid">
+        <div>
+          <span className="section-eyebrow">02 · Kurikulum ✎</span>
+          <h2 className="section-title">
+            Kurikulum inovatif &amp; <em className="hl-pill hl-yellow">dua ijazah.</em>
+          </h2>
+          <p style={{marginTop: 20, fontSize: 17, maxWidth: 520}}>
+            Kami menggabungkan kurikulum nasional Kemendikbud dengan modifikasi khusus. Lulusan mendapatkan
+            <strong> dua ijazah sekaligus</strong>: Kemendikbud dan Industri Kreatif — siap terjun ke dunia kerja
+            profesional atau melanjutkan ke PT favorit.
+          </p>
+          <ul className="curr-list">
+            {items.map((it, i) => (
+              <li key={i}>
+                <div className="dot">0{i+1}</div>
+                <div>
+                  <strong>{it.t}</strong>
+                  <small>{it.d}</small>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="diploma-stack">
+          <div className="diploma diploma--1">
+            <span className="diploma__ribbon">IJAZAH 01</span>
+            <h4>Kemendikbud Ristek</h4>
+            <p>Ijazah SMA resmi Kurikulum Merdeka — diakui seluruh PTN &amp; PTS di Indonesia.</p>
+            <div className="diploma__seal">Resmi</div>
+          </div>
+          <div className="diploma diploma--2">
+            <span className="diploma__ribbon">IJAZAH 02</span>
+            <h4>Industri Kreatif</h4>
+            <p>Sertifikasi kompetensi kreatif (Filmmaking, Desain, Animasi) untuk jalur industri &amp; freelance.</p>
+            <div className="diploma__seal" style={{background: 'var(--hm-pink)', boxShadow: '0 0 0 2px var(--hm-pink)'}}>Kreatif</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Factory ─────────────────────────────────────── */
+const Factory = () => {
+  const factories = [
+    { icon: 'bi-camera-reels-fill', name: 'Digital Factory', desc: 'Produksi konten digital, sosial media, fotografi komersial.' },
+    { icon: 'bi-film', name: 'Animation Factory', desc: 'Studio animasi 2D/3D lengkap untuk praktik langsung.' },
+    { icon: 'bi-code-slash', name: 'Coding Factory', desc: 'Pengembangan software, game, dan produk digital.' },
+    { icon: 'bi-image-fill', name: 'Paradise Picture', desc: 'Rumah produksi film — proyek nyata bareng praktisi.' },
+  ];
+  return (
+    <section id="factory" className="section factory">
+      <div className="container">
+        <div className="factory__head">
+          <span className="section-eyebrow">03 · Creative Factory ✦</span>
+          <h2 className="section-title">
+            Belajar langsung di <em className="hl-pill hl-pink">pusat industri</em> kreatif.
+          </h2>
+          <p>
+            Kami tidak hanya belajar teori. HelloMotion High School Malang menggandeng Digital Factory,
+            Animation Factory, Coding Factory, dan Paradise Picture di <strong>Kawasan KEK Singhasari</strong>.
+            Siswa mengerjakan proyek langsung bersama para ahli dan terhubung dengan industri kreatif sejak kelas 10.
+          </p>
+        </div>
+
+        <div className="factory__grid">
+          {factories.map((f, i) => (
+            <article className="factory-card" key={f.name}>
+              <span className="factory-card__num">0{i+1}</span>
+              <div className="factory-card__icon"><i className={`bi ${f.icon}`}></i></div>
+              <h4>{f.name}</h4>
+              <p>{f.desc}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="factory__benefit">
+          <i className="bi bi-award-fill"></i>
+          <span>
+            <strong>Keuntungan nyata:</strong> portofolio industri sejak SMA, relasi profesional,
+            &amp; peluang magang di KEK Singhasari — bekal untuk karier kreatif atau studi lanjut.
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Subjects ─────────────────────────────────────── */
+const Subjects = () => {
+  const creative = ['Fotografi', 'Desain Grafis', 'Ilustrasi', 'Animasi', 'Filmmaking'];
+  const academic = ['Ekonomi', 'Matematika', 'Bhs Inggris', 'Bhs Jepang', 'Entrepreneurship', 'IPS/IPA Terintegrasi'];
+
+  return (
+    <section id="subjects" className="section">
+      <div className="container">
+        <div style={{textAlign: 'center', maxWidth: 760, margin: '0 auto'}}>
+          <span className="section-eyebrow">04 · Mata Pelajaran ★</span>
+          <h2 className="section-title">
+            Seimbang antara <em className="hl-pill hl-pink">kreativitas</em> &amp; <em className="hl-pill hl-mint">akademik.</em>
+          </h2>
+          <p style={{marginTop: 18, fontSize: 17}}>
+            Lebih banyak praktik daripada teori. Pelajaran umum di HelloMotion pun seru, aplikatif, dan tidak pernah PR.
+          </p>
+        </div>
+
+        <div className="subjects__split">
+          <div className="subject-col subject-col--creative">
+            <span className="subject-col__label">Mapel Khas</span>
+            <h3>Untuk melatih cipta &amp; rasa.</h3>
+            <p>Mata pelajaran spesialisasi industri kreatif — diajar langsung oleh praktisi profesional.</p>
+            <ul>{creative.map(c => <li key={c}>{c}</li>)}</ul>
+            <div className="subject-col__tagline">
+              <i className="bi bi-brush-fill"></i>
+              Setiap siswa bebas eksplorasi minat sejak kelas 10.
+            </div>
+          </div>
+
+          <div className="subject-col subject-col--academic">
+            <span className="subject-col__label">Mapel Umum</span>
+            <h3>Pondasi akademik yang kuat.</h3>
+            <p>Kurikulum Merdeka dikemas lewat metode PBL — aplikatif, menyenangkan, dan <strong>tanpa PR</strong>.</p>
+            <ul>{academic.map(a => <li key={a}>{a}</li>)}</ul>
+            <div className="subject-col__tagline">
+              <i className="bi bi-book-half"></i>
+              Siap SNBP / SNBT maupun jalur prestasi.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Life ─────────────────────────────────────── */
+const Life = () => {
+  return (
+    <section id="life" className="section life">
+      <div className="container">
+        <div style={{maxWidth: 720}}>
+          <span className="section-eyebrow">05 · Kehidupan Sekolah ✎</span>
+          <h2 className="section-title">
+            Sekolah paling seru buat <em className="hl-pill hl-pink">anak kreatif</em> 😎
+          </h2>
+          <p style={{marginTop: 18, fontSize: 17}}>
+            Di HelloMotion, suasana belajar sehangat studio — kolaboratif, bebas ekspresi, dan penuh kejutan.
+          </p>
+        </div>
+
+        <div className="life__grid">
+          <div className="life-tile life-tile--classroom">
+            <span className="life-tile__tag">ruang kelas ✨</span>
+            <i className="bi bi-easel2-fill life-tile__icon"></i>
+            <h4>Creative Classrooms</h4>
+            <p>Kelas wajib dicoret-coret dan dihias sesuai keinginan kelas. Dinding adalah kanvas.</p>
+          </div>
+
+          <div className="life-tile life-tile--uniform">
+            <i className="bi bi-palette2 life-tile__icon"></i>
+            <h4>Custom Uniform</h4>
+            <p>Seragam desain sendiri — hanya dipakai hari Senin. Selebihnya bebas &amp; ekspresif.</p>
+          </div>
+
+          <div className="life-tile life-tile--ipad">
+            <i className="bi bi-tablet-fill life-tile__icon"></i>
+            <h4>One Student, One iPad</h4>
+            <p>Dukungan penuh teknologi Apple untuk eksplorasi tanpa batas. Gratis untuk siswa baru.</p>
+          </div>
+
+          <div className="life-tile life-tile--asrama">
+            <img src="assets/asrama.png" alt="Asrama HelloMotion" />
+            <div className="asrama-body">
+              <h4>Asrama &amp; Lingkungan 24/7</h4>
+              <p>Hunian nyaman bagi siswa luar kota. Pendampingan akademik dan pembinaan karakter harian oleh mentor.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Alumni ─────────────────────────────────────── */
+const Alumni = () => {
+  const achievements = [
+    { icon: 'bi-trophy-fill', title: 'Medali Emas FIKSI', desc: 'Festival Inovasi & Kewirausahaan Siswa Nasional', year: '2024' },
+    { icon: 'bi-camera-reels', title: 'Nominasi FFI', desc: 'Festival Film Indonesia — kategori film pelajar', year: '2023' },
+    { icon: 'bi-mortarboard-fill', title: 'Diterima UI, ITB, UGM', desc: 'Jalur prestasi & SNBP dengan beasiswa penuh', year: '2024' },
+    { icon: 'bi-globe-americas', title: 'Student Exchange Jepang', desc: 'Program pertukaran budaya & bahasa tahunan', year: '2025' },
+  ];
+
+  const testimonis = [
+    {
+      name: 'Raka Prasetya',
+      role: 'Alumni 2024 · Mahasiswa DKV ITB',
+      quote: '"Di HelloMotion aku belajar bikin film beneran sejak kelas 10. Portofolio itu yang bantu aku masuk ITB jalur prestasi tanpa tes."'
+    },
+    {
+      name: 'Alya Syahrani',
+      role: 'Siswa Kelas 11',
+      quote: '"Kelas-nya kayak studio kreatif. Nggak ada PR, tapi justru bikin kami lebih semangat karena semua proyek terasa nyata."'
+    },
+    {
+      name: 'Bu Fitri Handayani',
+      role: 'Orang tua alumni',
+      quote: '"Awalnya ragu karena beda dari SMA biasa. Tapi anak saya tumbuh lebih percaya diri, mandiri, dan punya karya yang bisa dibanggakan."'
+    }
+  ];
+
+  return (
+    <section id="alumni" className="section">
+      <div className="container">
+        <div className="alumni__head">
+          <div>
+            <span className="section-eyebrow">06 · Alumni &amp; Prestasi ✦</span>
+            <h2 className="section-title">
+              Prestasi tanpa batas, <em className="hl-pill hl-yellow">masa depan berkelas.</em>
+            </h2>
+          </div>
+          <p style={{maxWidth: 380, fontSize: 16}}>
+            Alumni kami telah menembus berbagai PTN ternama dan kampus kreatif luar negeri —
+            bersaing di dunia kreatif dengan prestasi nasional yang nyata.
+          </p>
+        </div>
+
+        <div className="achievement-strip">
+          {achievements.map((a) => (
+            <article className="ach-card" key={a.title}>
+              <div className="ach-card__medal"><i className={`bi ${a.icon}`}></i></div>
+              <h5>{a.title}</h5>
+              <p>{a.desc}</p>
+              <span className="ach-card__year">{a.year}</span>
+            </article>
+          ))}
+        </div>
+
+        <div className="testi__grid">
+          {testimonis.map((t) => (
+            <article className="testi-card" key={t.name}>
+              <div className="testi-card__marks">&ldquo;</div>
+              <p className="testi-card__quote">{t.quote}</p>
+              <div className="testi-card__who">
+                <div className="testi-card__avatar">{t.name.split(' ').map(n => n[0]).slice(0,2).join('')}</div>
+                <div>
+                  <strong>{t.name}</strong>
+                  <small>{t.role}</small>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Alur ─────────────────────────────────────── */
+const Alur = () => {
+  const steps = [
+    { n: '01', t: 'Isi Formulir', d: 'Daftar online — gratis biaya formulir.' },
+    { n: '02', t: 'Tes Minat', d: 'Tes bakat, minat, & wawancara orang tua.' },
+    { n: '03', t: 'Portofolio', d: 'Kirim karya atau passion project (opsional).' },
+    { n: '04', t: 'Pengumuman', d: 'Hasil diumumkan 7 hari kerja via email.' },
+    { n: '05', t: 'Registrasi', d: 'Selesaikan daftar ulang & dapatkan iPad!' },
+  ];
+  return (
+    <section id="alur" className="section alur">
+      <div className="container">
+        <div style={{textAlign: 'center', maxWidth: 640, margin: '0 auto'}}>
+          <span className="section-eyebrow">07 · Alur PPDB ✎</span>
+          <h2 className="section-title">
+            Lima langkah jadi <em className="hl-pill hl-pink">siswa HelloMotion.</em>
+          </h2>
+          <p style={{marginTop: 16}}>Prosesnya simpel — kami dampingi dari formulir sampai hari pertama sekolah.</p>
+        </div>
+        <div className="timeline">
+          {steps.map((s) => (
+            <div className="tl-step" key={s.n}>
+              <div className="tl-step__num">{s.n}</div>
+              <h5>{s.t}</h5>
+              <p>{s.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── FAQ ─────────────────────────────────────── */
+const FAQ = () => {
+  const [openIdx, setOpenIdx] = React.useState(0);
+  const faqs = [
+    { q: 'Apakah ijazah HelloMotion diakui di PTN?',
+      a: 'Ya, HelloMotion High School terakreditasi Kemendikbud Ristek dan mengeluarkan ijazah SMA resmi. Lulusan kami diterima di UI, ITB, UGM, Unpad, dan kampus kreatif luar negeri lewat jalur SNBP, SNBT, dan prestasi.' },
+    { q: 'Berapa total biaya sekolah per tahun?',
+      a: 'Biaya terdiri dari uang pangkal dan SPP bulanan. Gelombang 1 mendapat diskon SPP 25% dan gratis biaya formulir pendaftaran. Hubungi tim admisi untuk rincian tarif lengkap dan skema cicilan.' },
+    { q: 'Apa benar setiap siswa mendapat iPad gratis?',
+      a: 'Benar. Setiap siswa baru gelombang 1 mendapatkan 1 unit iPad untuk mendukung pembelajaran berbasis proyek. iPad menjadi milik siswa setelah menyelesaikan masa studi 3 tahun.' },
+    { q: 'Apakah ada asrama untuk siswa luar kota?',
+      a: 'Ya, tersedia asrama putra dan putri di lingkungan sekolah. Fasilitas mencakup kamar, ruang belajar, kantin, dan mentor pendamping 24 jam. Biaya asrama terpisah dari SPP.' },
+    { q: 'Bagaimana kalau anak saya belum yakin dengan bidang kreatifnya?',
+      a: 'Justru di sinilah siswa difasilitasi mengeksplorasi 5 bidang kreatif di semester pertama. Spesialisasi baru ditentukan di akhir kelas 10 — dengan bimbingan mentor.' },
+    { q: 'Apakah HelloMotion menerima siswa pindahan dari SMA lain?',
+      a: 'Bisa, untuk kelas 10 dan 11 dengan seleksi tambahan. Silakan hubungi WhatsApp admisi untuk informasi kuota dan prosesnya.' },
+  ];
+  return (
+    <section id="faq" className="section">
+      <div className="container" style={{textAlign: 'center'}}>
+        <span className="section-eyebrow">FAQ ✦</span>
+        <h2 className="section-title">
+          Pertanyaan yang sering <em className="hl-pill hl-yellow">ditanyakan.</em>
+        </h2>
+        <div className="faq__wrap" style={{textAlign: 'left'}}>
+          {faqs.map((f, i) => (
+            <div key={i} className={`faq-item ${openIdx === i ? 'open' : ''}`}>
+              <button className="faq-item__q" onClick={() => setOpenIdx(openIdx === i ? -1 : i)}>
+                <span>{f.q}</span>
+                <i className="bi bi-plus"></i>
+              </button>
+              <div className="faq-item__a"><p>{f.a}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Daftar ─────────────────────────────────────── */
+const Daftar = () => {
+  const [form, setForm] = React.useState({
+    nama: '', email: '', phone: '', smp: '', minat: '', catatan: ''
+  });
+  const [errors, setErrors] = React.useState({});
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const set = (k) => (e) => setForm(s => ({ ...s, [k]: e.target.value }));
+
+  const validate = () => {
+    const e = {};
+    if (!form.nama.trim()) e.nama = 'Nama wajib diisi';
+    if (!form.email.match(/^\S+@\S+\.\S+$/)) e.email = 'Email tidak valid';
+    if (!form.phone.match(/^[0-9+\-\s]{8,}$/)) e.phone = 'No. WhatsApp tidak valid';
+    if (!form.smp.trim()) e.smp = 'Asal SMP wajib diisi';
+    if (!form.minat) e.minat = 'Pilih minat program';
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const submit = (ev) => {
+    ev.preventDefault();
+    if (validate()) setSubmitted(true);
+  };
+
+  return (
+    <section id="daftar" className="section daftar">
+      <div className="daftar__shapes" aria-hidden="true">
+        <div className="s" style={{top: '10%', left: '-5%', width: 220, height: 220, background: 'rgba(255,255,255,0.08)'}}></div>
+        <div className="s" style={{bottom: '5%', right: '-3%', width: 180, height: 180, background: 'var(--hm-yellow)', opacity: 0.2}}></div>
+      </div>
+
+      <div className="container daftar__grid">
+        <div className="daftar__promo">
+          <span className="section-eyebrow">Final CTA 🎓</span>
+          <h2 className="section-title" style={{color: 'white'}}>
+            <em className="hl-pill hl-yellow">ENROLL NOW!</em><br/>
+            Kuota terbatas.
+          </h2>
+          <p style={{marginTop: 20, fontSize: 17, color: 'rgba(255,255,255,0.9)', maxWidth: 480}}>
+            Dapatkan promo gelombang 1: gratis biaya formulir + diskon SPP hingga 25%.
+            Formulir online hanya 3 menit.
+          </p>
+
+          <div className="daftar__promo-highlights">
+            <div className="promo-row">
+              <div className="promo-row__icon"><i className="bi bi-ticket-perforated-fill"></i></div>
+              <div>
+                <strong>Gratis biaya formulir</strong>
+                <small>Pendaftaran online tanpa biaya admin</small>
+              </div>
+            </div>
+            <div className="promo-row">
+              <div className="promo-row__icon"><i className="bi bi-percent"></i></div>
+              <div>
+                <strong>Diskon SPP 25%</strong>
+                <small>Khusus pendaftar gelombang 1 (sampai 30 Juni 2026)</small>
+              </div>
+            </div>
+            <div className="promo-row">
+              <div className="promo-row__icon"><i className="bi bi-tablet-fill"></i></div>
+              <div>
+                <strong>Free iPad untuk siswa baru</strong>
+                <small>Jadi milik siswa setelah 3 tahun masa studi</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="form-card">
+          {!submitted ? (
+            <>
+              <h3>Formulir Pendaftaran</h3>
+              <p>Tim admisi akan menghubungi kamu dalam 1×24 jam kerja.</p>
+              <form onSubmit={submit} noValidate>
+                <div className="form-row">
+                  <div className={`field ${errors.nama ? 'error' : ''}`}>
+                    <label>Nama Lengkap Calon Siswa</label>
+                    <input type="text" value={form.nama} onChange={set('nama')} placeholder="mis. Dimas Prasetya"/>
+                    {errors.nama && <div className="field__err">{errors.nama}</div>}
+                  </div>
+                </div>
+                <div className="form-row form-row--2">
+                  <div className={`field ${errors.email ? 'error' : ''}`}>
+                    <label>Email orang tua / wali</label>
+                    <input type="email" value={form.email} onChange={set('email')} placeholder="nama@email.com"/>
+                    {errors.email && <div className="field__err">{errors.email}</div>}
+                  </div>
+                  <div className={`field ${errors.phone ? 'error' : ''}`}>
+                    <label>No. WhatsApp aktif</label>
+                    <input type="tel" value={form.phone} onChange={set('phone')} placeholder="0822 xxxx xxxx"/>
+                    {errors.phone && <div className="field__err">{errors.phone}</div>}
+                  </div>
+                </div>
+                <div className="form-row form-row--2">
+                  <div className={`field ${errors.smp ? 'error' : ''}`}>
+                    <label>Asal SMP</label>
+                    <input type="text" value={form.smp} onChange={set('smp')} placeholder="mis. SMPN 1 Malang"/>
+                    {errors.smp && <div className="field__err">{errors.smp}</div>}
+                  </div>
+                  <div className={`field ${errors.minat ? 'error' : ''}`}>
+                    <label>Minat program kreatif</label>
+                    <select value={form.minat} onChange={set('minat')}>
+                      <option value="">Pilih minat...</option>
+                      <option>Fotografi</option>
+                      <option>Desain Grafis</option>
+                      <option>Ilustrasi</option>
+                      <option>Animasi</option>
+                      <option>Filmmaking</option>
+                      <option>Belum yakin, masih eksplorasi</option>
+                    </select>
+                    {errors.minat && <div className="field__err">{errors.minat}</div>}
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="field">
+                    <label>Catatan (opsional)</label>
+                    <textarea rows="3" value={form.catatan} onChange={set('catatan')} placeholder="Pertanyaan, permintaan info beasiswa, dll."></textarea>
+                  </div>
+                </div>
+                <button type="submit" className="form-submit">
+                  Kirim Pendaftaran — Gratis! <i className="bi bi-send-fill"></i>
+                </button>
+              </form>
+            </>
+          ) : (
+            <div className="form-success">
+              <div className="form-success__icon"><i className="bi bi-check-lg"></i></div>
+              <h4>Pendaftaran terkirim! 🎉</h4>
+              <p>Terima kasih, <strong>{form.nama}</strong>. Tim admisi kami akan menghubungi di <strong>{form.phone}</strong> dalam 1×24 jam kerja.</p>
+              <button className="btn btn-ghost btn-sm" style={{marginTop: 20}} onClick={() => { setSubmitted(false); setForm({nama:'',email:'',phone:'',smp:'',minat:'',catatan:''}); }}>
+                Daftar lagi
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ── Footer ─────────────────────────────────────── */
+const Footer = () => {
+  return (
+    <footer className="footer">
+      <div className="container footer__grid">
+        <div className="footer__brand">
+          <h4>HelloMotion High School Malang</h4>
+          <p>SMA kreatif pertama di Indonesia. Membentuk generasi kreatif, kritis, dan berbudi pekerti — siap jadi pemimpin di abad 21.</p>
+          <div className="footer__social">
+            <a href="#" aria-label="Instagram"><i className="bi bi-instagram"></i></a>
+            <a href="#" aria-label="TikTok"><i className="bi bi-tiktok"></i></a>
+            <a href="#" aria-label="YouTube"><i className="bi bi-youtube"></i></a>
+            <a href="#" aria-label="WhatsApp"><i className="bi bi-whatsapp"></i></a>
+          </div>
+        </div>
+        <div className="footer__col">
+          <h5>Kontak</h5>
+          <a href="https://wa.me/6282289991200">WA: 0822 8999 1200</a>
+          <a href="https://instagram.com/hellomotion.malang">@hellomotion.malang</a>
+          <a href="https://hellomotion.sch.id">hellomotion.sch.id</a>
+        </div>
+        <div className="footer__col">
+          <h5>Alamat</h5>
+          <p>Gedung Malang Creative Center (MCC)<br/>Lantai 5, Kawasan KEK Singhasari<br/>Malang, Jawa Timur</p>
+        </div>
+        <div className="footer__col">
+          <h5>Info</h5>
+          <a href="#about">Tentang</a>
+          <a href="#curriculum">Kurikulum</a>
+          <a href="#daftar">PPDB 2026/2027</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+      <div className="container footer__copy">
+        <span>© 2026 HelloMotion High School. All rights reserved.</span>
+        <span>Dibuat dengan ♥ di Malang.</span>
+      </div>
+    </footer>
+  );
+};
+
+/* ── App ─────────────────────────────────────── */
+const TWEAK_DEFAULTS = {
+  "theme": "light",
+  "accent": "pink"
+};
+
+const ACCENTS = {
+  pink:   { '--hm-pink': '#E66571', '--hm-pink-deep': '#D94A5A', '--hm-pink-tint': '#FDEBED', '--hm-pink-soft': '#F7C2C9' },
+  violet: { '--hm-pink': '#8B5CF6', '--hm-pink-deep': '#7C3AED', '--hm-pink-tint': '#F3EEFF', '--hm-pink-soft': '#D7C7FB' },
+  coral:  { '--hm-pink': '#FF6B4A', '--hm-pink-deep': '#EB4D2C', '--hm-pink-tint': '#FFEAE2', '--hm-pink-soft': '#FFC4B2' },
+  blue:   { '--hm-pink': '#3B82F6', '--hm-pink-deep': '#2563EB', '--hm-pink-tint': '#E7F0FE', '--hm-pink-soft': '#B8D1FA' },
+};
+
+function applyTweaks(t) {
+  document.documentElement.setAttribute('data-theme', t.theme === 'dark' ? 'dark' : 'light');
+  const accent = ACCENTS[t.accent] || ACCENTS.pink;
+  Object.entries(accent).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+}
+
+const TweaksPanel = ({ tweaks, setTweaks, onClose }) => {
+  const setKey = (k, v) => {
+    const next = { ...tweaks, [k]: v };
+    setTweaks(next);
+    applyTweaks(next);
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*'); } catch {}
+  };
+
+  return (
+    <div className="tweaks">
+      <div className="tweaks__head">
+        <strong>🎨 Tweaks</strong>
+        <button onClick={onClose} aria-label="close"><i className="bi bi-x-lg"></i></button>
+      </div>
+      <div className="tweaks__body">
+        <div className="tweak-row">
+          <label>Warna aksen</label>
+          <div className="swatches">
+            {Object.entries(ACCENTS).map(([k, v]) => (
+              <button key={k}
+                className={`swatch ${tweaks.accent === k ? 'is-active' : ''}`}
+                style={{ background: v['--hm-pink'] }}
+                onClick={() => setKey('accent', k)}
+                aria-label={k}/>
+            ))}
+          </div>
+        </div>
+        <div className="tweak-row toggle-row">
+          <span><i className={`bi bi-${tweaks.theme === 'dark' ? 'moon-stars-fill' : 'sun-fill'}`}></i> Dark mode</span>
+          <button className={`toggle ${tweaks.theme === 'dark' ? 'is-on' : ''}`}
+                  onClick={() => setKey('theme', tweaks.theme === 'dark' ? 'light' : 'dark')}
+                  aria-label="dark mode"/>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const App = () => {
+  const [tweaks, setTweaks] = React.useState(TWEAK_DEFAULTS);
+  const [showTweaks, setShowTweaks] = React.useState(false);
+
+  React.useEffect(() => {
+    applyTweaks(TWEAK_DEFAULTS);
+
+    const onMsg = (ev) => {
+      const d = ev.data || {};
+      if (d.type === '__activate_edit_mode') setShowTweaks(true);
+      if (d.type === '__deactivate_edit_mode') setShowTweaks(false);
+    };
+    window.addEventListener('message', onMsg);
+    try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch {}
+
+    // reveal on scroll
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.section, .hero__copy, .hero__visual').forEach(el => {
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+
+    return () => { window.removeEventListener('message', onMsg); io.disconnect(); };
+  }, []);
+
+  return (
+    <>
+      <Nav/>
+      <Hero/>
+      <div className="stitch"/>
+      <Curriculum/>
+      <div className="stitch"/>
+      <Factory/>
+      <div className="stitch"/>
+      <Subjects/>
+      <div className="stitch"/>
+      <Life/>
+      <div className="stitch"/>
+      <Alumni/>
+      <div className="stitch"/>
+      <Alur/>
+      <div className="stitch"/>
+      <FAQ/>
+      <Daftar/>
+      <Footer/>
+
+      <a className="fab-wa" href="https://wa.me/6282289991200" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <i className="bi bi-whatsapp"></i>
+      </a>
+
+      {showTweaks && <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} onClose={() => setShowTweaks(false)}/>}
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+
+</script>
+</body>
+</html>

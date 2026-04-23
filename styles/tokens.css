@@ -1,0 +1,244 @@
+/* ============================================================
+   HelloMotion High School — Brand Tokens
+   Derived from PPDB 2026/2027 poster
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Caveat:wght@400;700&display=swap');
+
+:root {
+  /* Brand palette — exact hex from poster */
+  --hm-pink: #E66571;
+  --hm-pink-deep: #D94A5A;
+  --hm-pink-soft: #F7C2C9;
+  --hm-pink-tint: #FDEBED;
+
+  --hm-yellow: #F4B232;
+  --hm-yellow-deep: #E89A10;
+  --hm-yellow-soft: #FBE3A8;
+  --hm-yellow-tint: #FEF6E0;
+
+  --hm-mint: #35BE92;
+  --hm-mint-deep: #1D9E76;
+  --hm-mint-soft: #A4E6CE;
+  --hm-mint-tint: #E3F7EE;
+
+  --hm-navy: #0F3A48;           /* primary text / headlines */
+  --hm-navy-2: #1A5567;         /* secondary text */
+  --hm-ink: #0A252F;            /* near-black */
+
+  --hm-cream: #FFF8EA;          /* warm page background */
+  --hm-paper: #FFFFFF;
+  --hm-muted: #6B8390;
+  --hm-border: #E8DFCC;
+
+  /* Semantic */
+  --bg-page: var(--hm-cream);
+  --bg-card: var(--hm-paper);
+  --fg-1: var(--hm-navy);
+  --fg-2: var(--hm-navy-2);
+  --fg-3: var(--hm-muted);
+  --accent: var(--hm-pink);
+
+  /* Type */
+  --font-display: 'Onest', system-ui, sans-serif;
+  --font-body: 'Onest', system-ui, sans-serif;
+  --font-accent: 'Caveat', cursive;       /* for playful doodle labels */
+  --font-serif: 'Fraunces', serif;        /* optional editorial accent */
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-2xl: 36px;
+  --r-pill: 9999px;
+
+  /* Shadows */
+  --sh-sm: 0 2px 6px rgba(15, 58, 72, 0.06);
+  --sh-md: 0 10px 24px rgba(15, 58, 72, 0.08);
+  --sh-lg: 0 22px 50px rgba(15, 58, 72, 0.12);
+  --sh-pop: 0 6px 0 0 rgba(15, 58, 72, 0.14);  /* hard shadow for poster vibe */
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Dark mode — swapped neutrals, brand colors stay saturated */
+[data-theme="dark"] {
+  --bg-page: #0B1E26;
+  --bg-card: #112B35;
+  --fg-1: #F4EFE0;
+  --fg-2: #D1DCE2;
+  --fg-3: #8FA3AC;
+  --hm-cream: #0B1E26;
+  --hm-paper: #112B35;
+  --hm-border: #1E3B47;
+  --hm-navy: #F4EFE0;
+  --hm-navy-2: #D1DCE2;
+  --sh-sm: 0 2px 6px rgba(0,0,0,0.3);
+  --sh-md: 0 10px 24px rgba(0,0,0,0.4);
+  --sh-lg: 0 22px 50px rgba(0,0,0,0.5);
+  --sh-pop: 0 6px 0 0 rgba(0,0,0,0.4);
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--fg-1);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  color: var(--fg-1);
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.05;
+  font-weight: 800;
+}
+
+p { margin: 0; color: var(--fg-2); }
+
+::selection { background: var(--hm-yellow); color: var(--hm-navy); }
+
+/* Utility buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: var(--r-pill);
+  font-weight: 700;
+  font-size: 15px;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), background 0.2s;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: var(--hm-pink);
+  color: white;
+  box-shadow: var(--sh-pop);
+}
+.btn-primary:hover { background: var(--hm-pink-deep); }
+
+.btn-secondary {
+  background: var(--hm-navy);
+  color: var(--hm-cream);
+}
+[data-theme="dark"] .btn-secondary {
+  background: var(--hm-yellow);
+  color: var(--hm-ink);
+}
+
+.btn-yellow {
+  background: var(--hm-yellow);
+  color: var(--hm-navy);
+  box-shadow: var(--sh-pop);
+}
+.btn-yellow:hover { background: var(--hm-yellow-deep); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--fg-1);
+  border: 2px solid var(--hm-navy);
+}
+[data-theme="dark"] .btn-ghost { border-color: var(--fg-1); }
+
+.btn-sm { padding: 10px 18px; font-size: 14px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--hm-paper);
+  color: var(--hm-navy);
+  border: 1.5px solid var(--hm-border);
+}
+.chip-pink { background: var(--hm-pink); color: white; border-color: transparent; }
+.chip-yellow { background: var(--hm-yellow); color: var(--hm-navy); border-color: transparent; }
+.chip-mint { background: var(--hm-mint); color: white; border-color: transparent; }
+
+/* Container */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* Section head pattern */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-accent);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--hm-pink);
+  transform: rotate(-2deg);
+}
+
+.section-title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--fg-1);
+  margin-top: 8px;
+}
+
+/* Yellow/pink/mint highlight pills (matching poster) */
+.hl-pill {
+  display: inline-block;
+  padding: 0 14px;
+  border-radius: 14px;
+  white-space: nowrap;
+}
+.hl-yellow { background: var(--hm-yellow); color: var(--hm-navy); }
+.hl-pink   { background: var(--hm-pink);   color: white; }
+.hl-mint   { background: var(--hm-mint);   color: white; }
+
+/* Hide scrollbar on horizontal scrollers */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Shapes (organic blobs) */
+.shape {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 3px solid var(--hm-pink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Sticky note scribble marks (the "???" squiggles in poster) */
+.scribble {
+  font-family: var(--font-accent);
+  color: var(--hm-navy);
+  font-weight: 700;
+  transform: rotate(-12deg);
+  display: inline-block;
+}

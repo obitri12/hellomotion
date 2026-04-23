@@ -1,0 +1,5 @@
+.DS_Store
+tmp/
+scraps/
+uploads/
+node_modules/
