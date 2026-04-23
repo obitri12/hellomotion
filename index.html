@@ -1030,6 +1030,40 @@ p { margin: 0; color: var(--fg-2); }
   <div id="root"></div>
 <script type="text/babel" data-presets="react">
 
+/* ══════════════════════════════════════════════════
+   Strapi CMS Integration Layer
+   ══════════════════════════════════════════════════ */
+const STRAPI_URL = window.STRAPI_URL || 'http://localhost:1337';
+const API = `${STRAPI_URL}/api`;
+
+async function fetchAPI(endpoint, options = {}) {
+  try {
+    const res = await fetch(`${API}${endpoint}`, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options,
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.warn(`CMS fetch failed: ${endpoint}`, err.message);
+    return null;
+  }
+}
+
+function useCMS(endpoint, fallback, transform) {
+  const [data, setData] = React.useState(fallback);
+  React.useEffect(() => {
+    let cancelled = false;
+    fetchAPI(endpoint).then(res => {
+      if (cancelled || !res) return;
+      const d = transform ? transform(res) : res.data;
+      if (d) setData(d);
+    });
+    return () => { cancelled = true; };
+  }, []);
+  return data;
+}
+
 /* ── Nav ─────────────────────────────────────── */
 const Nav = ({ onOpenTweaks }) => {
   const [scrolled, setScrolled] = React.useState(false);
@@ -1092,7 +1126,22 @@ const Nav = ({ onOpenTweaks }) => {
 };
 
 /* ── Hero ─────────────────────────────────────── */
+const HERO_FALLBACK = {
+  badge_text: 'PPDB Tahun Ajaran 2026/2027',
+  badge_scribble: 'dibuka!',
+  headline: 'MORE THAN JUST HIGH SCHOOL!',
+  sub_text: 'Lagi nyari SMA yang bisa mengasah kreativitasmu tapi tetap nggak ketinggalan pelajaran umum? HelloMotion High School Malang jawabannya. Di sini kamu bisa belajar Film Making, Desain Grafis, Ilustrasi, Fotografi, dan banyak lagi — dengan kurikulum yang berpusat pada kebutuhanmu.',
+  cta_primary_text: 'Daftar Sekarang — Gratis Biaya Formulir!',
+  cta_secondary_text: 'Lihat Program',
+  stat_1_value: '2', stat_1_label: 'Ijazah resmi sekaligus',
+  stat_2_value: '25%', stat_2_label: 'Diskon SPP gelombang 1',
+  stat_3_value: '1:1', stat_3_label: 'Siswa & iPad pribadi',
+};
+
 const Hero = () => {
+  const h = useCMS('/hero-section?populate=*&status=published', HERO_FALLBACK, (res) => res.data);
+  const imgUrl = h.hero_image?.url ? `${STRAPI_URL}${h.hero_image.url}` : 'assets/students.png';
+
   const go = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -1118,9 +1167,9 @@ const Hero = () => {
         <div className="hero__copy">
           <div className="hero__badge">
             <span className="badge-pill">
-              <i className="bi bi-stars"></i> PPDB Tahun Ajaran 2026/2027
+              <i className="bi bi-stars"></i> {h.badge_text}
             </span>
-            <span className="scribble hero__scribble">dibuka!</span>
+            <span className="scribble hero__scribble">{h.badge_scribble}</span>
           </div>
 
           <h1 className="hero__headline">
@@ -1132,33 +1181,29 @@ const Hero = () => {
             <span style={{fontSize: '0.85em'}}>🚀</span>
           </h1>
 
-          <p className="hero__sub">
-            Lagi nyari SMA yang bisa mengasah kreativitasmu tapi tetap nggak ketinggalan pelajaran umum?
-            <strong> HelloMotion High School Malang jawabannya.</strong> Di sini kamu bisa belajar Film Making,
-            Desain Grafis, Ilustrasi, Fotografi, dan banyak lagi — dengan kurikulum yang berpusat pada kebutuhanmu.
-          </p>
+          <p className="hero__sub" dangerouslySetInnerHTML={{__html: h.sub_text.replace(/HelloMotion High School Malang/g, '<strong>HelloMotion High School Malang</strong>')}} />
 
           <div className="hero__ctas">
             <button className="btn btn-primary" onClick={() => go('daftar')}>
-              Daftar Sekarang — Gratis Biaya Formulir! <i className="bi bi-arrow-right"></i>
+              {h.cta_primary_text} <i className="bi bi-arrow-right"></i>
             </button>
             <button className="btn btn-ghost" onClick={() => go('curriculum')}>
-              <i className="bi bi-play-circle"></i> Lihat Program
+              <i className="bi bi-play-circle"></i> {h.cta_secondary_text}
             </button>
           </div>
 
           <div className="hero__stats">
             <div className="hero__stat">
-              <strong>2</strong>
-              <span>Ijazah resmi sekaligus</span>
+              <strong>{h.stat_1_value}</strong>
+              <span>{h.stat_1_label}</span>
             </div>
             <div className="hero__stat">
-              <strong>25%</strong>
-              <span>Diskon SPP gelombang 1</span>
+              <strong>{h.stat_2_value}</strong>
+              <span>{h.stat_2_label}</span>
             </div>
             <div className="hero__stat">
-              <strong>1:1</strong>
-              <span>Siswa &amp; iPad pribadi</span>
+              <strong>{h.stat_3_value}</strong>
+              <span>{h.stat_3_label}</span>
             </div>
           </div>
         </div>
@@ -1166,7 +1211,7 @@ const Hero = () => {
         <div className="hero__visual">
           <div className="hero__photo-wrap">
             <div className="hero__photo-bg"></div>
-            <img src="assets/students.png" alt="Siswa HelloMotion" className="hero__photo" />
+            <img src={imgUrl} alt="Siswa HelloMotion" className="hero__photo" />
             <div className="hero__chip hero__chip--1">
               <i className="bi bi-lightning-charge-fill"></i>
               <div>
@@ -1258,13 +1303,15 @@ const Curriculum = () => {
 };
 
 /* ── Factory ─────────────────────────────────────── */
+const FACTORY_FALLBACK = [
+  { icon: 'bi-camera-reels-fill', name: 'Digital Factory', description: 'Produksi konten digital, sosial media, fotografi komersial.' },
+  { icon: 'bi-film', name: 'Animation Factory', description: 'Studio animasi 2D/3D lengkap untuk praktik langsung.' },
+  { icon: 'bi-code-slash', name: 'Coding Factory', description: 'Pengembangan software, game, dan produk digital.' },
+  { icon: 'bi-image-fill', name: 'Paradise Picture', description: 'Rumah produksi film — proyek nyata bareng praktisi.' },
+];
+
 const Factory = () => {
-  const factories = [
-    { icon: 'bi-camera-reels-fill', name: 'Digital Factory', desc: 'Produksi konten digital, sosial media, fotografi komersial.' },
-    { icon: 'bi-film', name: 'Animation Factory', desc: 'Studio animasi 2D/3D lengkap untuk praktik langsung.' },
-    { icon: 'bi-code-slash', name: 'Coding Factory', desc: 'Pengembangan software, game, dan produk digital.' },
-    { icon: 'bi-image-fill', name: 'Paradise Picture', desc: 'Rumah produksi film — proyek nyata bareng praktisi.' },
-  ];
+  const factories = useCMS('/factories?sort=order:asc&status=published', FACTORY_FALLBACK, (res) => res.data);
   return (
     <section id="factory" className="section factory">
       <div className="container">
@@ -1282,11 +1329,11 @@ const Factory = () => {
 
         <div className="factory__grid">
           {factories.map((f, i) => (
-            <article className="factory-card" key={f.name}>
+            <article className="factory-card" key={f.name || i}>
               <span className="factory-card__num">0{i+1}</span>
               <div className="factory-card__icon"><i className={`bi ${f.icon}`}></i></div>
               <h4>{f.name}</h4>
-              <p>{f.desc}</p>
+              <p>{f.description || f.desc}</p>
             </article>
           ))}
         </div>
@@ -1304,9 +1351,15 @@ const Factory = () => {
 };
 
 /* ── Subjects ─────────────────────────────────────── */
+const SUBJECTS_FALLBACK = {
+  creative: ['Fotografi', 'Desain Grafis', 'Ilustrasi', 'Animasi', 'Filmmaking'],
+  academic: ['Ekonomi', 'Matematika', 'Bhs Inggris', 'Bhs Jepang', 'Entrepreneurship', 'IPS/IPA Terintegrasi'],
+};
+
 const Subjects = () => {
-  const creative = ['Fotografi', 'Desain Grafis', 'Ilustrasi', 'Animasi', 'Filmmaking'];
-  const academic = ['Ekonomi', 'Matematika', 'Bhs Inggris', 'Bhs Jepang', 'Entrepreneurship', 'IPS/IPA Terintegrasi'];
+  const subjects = useCMS('/subjects?sort=order:asc&status=published', null, (res) => res.data);
+  const creative = subjects ? subjects.filter(s => s.category === 'creative').map(s => s.name) : SUBJECTS_FALLBACK.creative;
+  const academic = subjects ? subjects.filter(s => s.category === 'academic').map(s => s.name) : SUBJECTS_FALLBACK.academic;
 
   return (
     <section id="subjects" className="section">
@@ -1398,31 +1451,21 @@ const Life = () => {
 };
 
 /* ── Alumni ─────────────────────────────────────── */
-const Alumni = () => {
-  const achievements = [
-    { icon: 'bi-trophy-fill', title: 'Medali Emas FIKSI', desc: 'Festival Inovasi & Kewirausahaan Siswa Nasional', year: '2024' },
-    { icon: 'bi-camera-reels', title: 'Nominasi FFI', desc: 'Festival Film Indonesia — kategori film pelajar', year: '2023' },
-    { icon: 'bi-mortarboard-fill', title: 'Diterima UI, ITB, UGM', desc: 'Jalur prestasi & SNBP dengan beasiswa penuh', year: '2024' },
-    { icon: 'bi-globe-americas', title: 'Student Exchange Jepang', desc: 'Program pertukaran budaya & bahasa tahunan', year: '2025' },
-  ];
+const ACH_FALLBACK = [
+  { icon: 'bi-trophy-fill', title: 'Medali Emas FIKSI', description: 'Festival Inovasi & Kewirausahaan Siswa Nasional', year: '2024' },
+  { icon: 'bi-camera-reels', title: 'Nominasi FFI', description: 'Festival Film Indonesia — kategori film pelajar', year: '2023' },
+  { icon: 'bi-mortarboard-fill', title: 'Diterima UI, ITB, UGM', description: 'Jalur prestasi & SNBP dengan beasiswa penuh', year: '2024' },
+  { icon: 'bi-globe-americas', title: 'Student Exchange Jepang', description: 'Program pertukaran budaya & bahasa tahunan', year: '2025' },
+];
+const TESTI_FALLBACK = [
+  { name: 'Raka Prasetya', role: 'Alumni 2024 · Mahasiswa DKV ITB', quote: '"Di HelloMotion aku belajar bikin film beneran sejak kelas 10. Portofolio itu yang bantu aku masuk ITB jalur prestasi tanpa tes."' },
+  { name: 'Alya Syahrani', role: 'Siswa Kelas 11', quote: '"Kelas-nya kayak studio kreatif. Nggak ada PR, tapi justru bikin kami lebih semangat karena semua proyek terasa nyata."' },
+  { name: 'Bu Fitri Handayani', role: 'Orang tua alumni', quote: '"Awalnya ragu karena beda dari SMA biasa. Tapi anak saya tumbuh lebih percaya diri, mandiri, dan punya karya yang bisa dibanggakan."' },
+];
 
-  const testimonis = [
-    {
-      name: 'Raka Prasetya',
-      role: 'Alumni 2024 · Mahasiswa DKV ITB',
-      quote: '"Di HelloMotion aku belajar bikin film beneran sejak kelas 10. Portofolio itu yang bantu aku masuk ITB jalur prestasi tanpa tes."'
-    },
-    {
-      name: 'Alya Syahrani',
-      role: 'Siswa Kelas 11',
-      quote: '"Kelas-nya kayak studio kreatif. Nggak ada PR, tapi justru bikin kami lebih semangat karena semua proyek terasa nyata."'
-    },
-    {
-      name: 'Bu Fitri Handayani',
-      role: 'Orang tua alumni',
-      quote: '"Awalnya ragu karena beda dari SMA biasa. Tapi anak saya tumbuh lebih percaya diri, mandiri, dan punya karya yang bisa dibanggakan."'
-    }
-  ];
+const Alumni = () => {
+  const achievements = useCMS('/achievements?sort=order:asc&status=published', ACH_FALLBACK, (res) => res.data);
+  const testimonis = useCMS('/testimonials?sort=order:asc&status=published', TESTI_FALLBACK, (res) => res.data);
 
   return (
     <section id="alumni" className="section">
@@ -1445,7 +1488,7 @@ const Alumni = () => {
             <article className="ach-card" key={a.title}>
               <div className="ach-card__medal"><i className={`bi ${a.icon}`}></i></div>
               <h5>{a.title}</h5>
-              <p>{a.desc}</p>
+              <p>{a.description || a.desc}</p>
               <span className="ach-card__year">{a.year}</span>
             </article>
           ))}
@@ -1472,14 +1515,16 @@ const Alumni = () => {
 };
 
 /* ── Alur ─────────────────────────────────────── */
+const STEPS_FALLBACK = [
+  { step_number: '01', title: 'Isi Formulir', description: 'Daftar online — gratis biaya formulir.' },
+  { step_number: '02', title: 'Tes Minat', description: 'Tes bakat, minat, & wawancara orang tua.' },
+  { step_number: '03', title: 'Portofolio', description: 'Kirim karya atau passion project (opsional).' },
+  { step_number: '04', title: 'Pengumuman', description: 'Hasil diumumkan 7 hari kerja via email.' },
+  { step_number: '05', title: 'Registrasi', description: 'Selesaikan daftar ulang & dapatkan iPad!' },
+];
+
 const Alur = () => {
-  const steps = [
-    { n: '01', t: 'Isi Formulir', d: 'Daftar online — gratis biaya formulir.' },
-    { n: '02', t: 'Tes Minat', d: 'Tes bakat, minat, & wawancara orang tua.' },
-    { n: '03', t: 'Portofolio', d: 'Kirim karya atau passion project (opsional).' },
-    { n: '04', t: 'Pengumuman', d: 'Hasil diumumkan 7 hari kerja via email.' },
-    { n: '05', t: 'Registrasi', d: 'Selesaikan daftar ulang & dapatkan iPad!' },
-  ];
+  const steps = useCMS('/timeline-steps?sort=order:asc&status=published', STEPS_FALLBACK, (res) => res.data);
   return (
     <section id="alur" className="section alur">
       <div className="container">
@@ -1492,10 +1537,10 @@ const Alur = () => {
         </div>
         <div className="timeline">
           {steps.map((s) => (
-            <div className="tl-step" key={s.n}>
-              <div className="tl-step__num">{s.n}</div>
-              <h5>{s.t}</h5>
-              <p>{s.d}</p>
+            <div className="tl-step" key={s.step_number || s.n}>
+              <div className="tl-step__num">{s.step_number || s.n}</div>
+              <h5>{s.title || s.t}</h5>
+              <p>{s.description || s.d}</p>
             </div>
           ))}
         </div>
@@ -1505,22 +1550,18 @@ const Alur = () => {
 };
 
 /* ── FAQ ─────────────────────────────────────── */
+const FAQ_FALLBACK = [
+  { question: 'Apakah ijazah HelloMotion diakui di PTN?', answer: 'Ya, HelloMotion High School terakreditasi Kemendikbud Ristek dan mengeluarkan ijazah SMA resmi. Lulusan kami diterima di UI, ITB, UGM, Unpad, dan kampus kreatif luar negeri lewat jalur SNBP, SNBT, dan prestasi.' },
+  { question: 'Berapa total biaya sekolah per tahun?', answer: 'Biaya terdiri dari uang pangkal dan SPP bulanan. Gelombang 1 mendapat diskon SPP 25% dan gratis biaya formulir pendaftaran. Hubungi tim admisi untuk rincian tarif lengkap dan skema cicilan.' },
+  { question: 'Apa benar setiap siswa mendapat iPad gratis?', answer: 'Benar. Setiap siswa baru gelombang 1 mendapatkan 1 unit iPad untuk mendukung pembelajaran berbasis proyek. iPad menjadi milik siswa setelah menyelesaikan masa studi 3 tahun.' },
+  { question: 'Apakah ada asrama untuk siswa luar kota?', answer: 'Ya, tersedia asrama putra dan putri di lingkungan sekolah. Fasilitas mencakup kamar, ruang belajar, kantin, dan mentor pendamping 24 jam. Biaya asrama terpisah dari SPP.' },
+  { question: 'Bagaimana kalau anak saya belum yakin dengan bidang kreatifnya?', answer: 'Justru di sinilah siswa difasilitasi mengeksplorasi 5 bidang kreatif di semester pertama. Spesialisasi baru ditentukan di akhir kelas 10 — dengan bimbingan mentor.' },
+  { question: 'Apakah HelloMotion menerima siswa pindahan dari SMA lain?', answer: 'Bisa, untuk kelas 10 dan 11 dengan seleksi tambahan. Silakan hubungi WhatsApp admisi untuk informasi kuota dan prosesnya.' },
+];
+
 const FAQ = () => {
   const [openIdx, setOpenIdx] = React.useState(0);
-  const faqs = [
-    { q: 'Apakah ijazah HelloMotion diakui di PTN?',
-      a: 'Ya, HelloMotion High School terakreditasi Kemendikbud Ristek dan mengeluarkan ijazah SMA resmi. Lulusan kami diterima di UI, ITB, UGM, Unpad, dan kampus kreatif luar negeri lewat jalur SNBP, SNBT, dan prestasi.' },
-    { q: 'Berapa total biaya sekolah per tahun?',
-      a: 'Biaya terdiri dari uang pangkal dan SPP bulanan. Gelombang 1 mendapat diskon SPP 25% dan gratis biaya formulir pendaftaran. Hubungi tim admisi untuk rincian tarif lengkap dan skema cicilan.' },
-    { q: 'Apa benar setiap siswa mendapat iPad gratis?',
-      a: 'Benar. Setiap siswa baru gelombang 1 mendapatkan 1 unit iPad untuk mendukung pembelajaran berbasis proyek. iPad menjadi milik siswa setelah menyelesaikan masa studi 3 tahun.' },
-    { q: 'Apakah ada asrama untuk siswa luar kota?',
-      a: 'Ya, tersedia asrama putra dan putri di lingkungan sekolah. Fasilitas mencakup kamar, ruang belajar, kantin, dan mentor pendamping 24 jam. Biaya asrama terpisah dari SPP.' },
-    { q: 'Bagaimana kalau anak saya belum yakin dengan bidang kreatifnya?',
-      a: 'Justru di sinilah siswa difasilitasi mengeksplorasi 5 bidang kreatif di semester pertama. Spesialisasi baru ditentukan di akhir kelas 10 — dengan bimbingan mentor.' },
-    { q: 'Apakah HelloMotion menerima siswa pindahan dari SMA lain?',
-      a: 'Bisa, untuk kelas 10 dan 11 dengan seleksi tambahan. Silakan hubungi WhatsApp admisi untuk informasi kuota dan prosesnya.' },
-  ];
+  const faqs = useCMS('/faqs?sort=order:asc&status=published', FAQ_FALLBACK, (res) => res.data);
   return (
     <section id="faq" className="section">
       <div className="container" style={{textAlign: 'center'}}>
@@ -1532,10 +1573,10 @@ const FAQ = () => {
           {faqs.map((f, i) => (
             <div key={i} className={`faq-item ${openIdx === i ? 'open' : ''}`}>
               <button className="faq-item__q" onClick={() => setOpenIdx(openIdx === i ? -1 : i)}>
-                <span>{f.q}</span>
+                <span>{f.question || f.q}</span>
                 <i className="bi bi-plus"></i>
               </button>
-              <div className="faq-item__a"><p>{f.a}</p></div>
+              <div className="faq-item__a"><p>{f.answer || f.a}</p></div>
             </div>
           ))}
         </div>
@@ -1552,6 +1593,8 @@ const Daftar = () => {
   const [errors, setErrors] = React.useState({});
   const [submitted, setSubmitted] = React.useState(false);
 
+  const [submitting, setSubmitting] = React.useState(false);
+
   const set = (k) => (e) => setForm(s => ({ ...s, [k]: e.target.value }));
 
   const validate = () => {
@@ -1565,9 +1608,20 @@ const Daftar = () => {
     return Object.keys(e).length === 0;
   };
 
-  const submit = (ev) => {
+  const submit = async (ev) => {
     ev.preventDefault();
-    if (validate()) setSubmitted(true);
+    if (!validate()) return;
+    setSubmitting(true);
+    try {
+      await fetchAPI('/registrations', {
+        method: 'POST',
+        body: JSON.stringify({ data: { ...form, status: 'baru' } }),
+      });
+    } catch (err) {
+      console.warn('Registration API failed, form still accepted locally');
+    }
+    setSubmitting(false);
+    setSubmitted(true);
   };
 
   return (
@@ -1665,8 +1719,8 @@ const Daftar = () => {
                     <textarea rows="3" value={form.catatan} onChange={set('catatan')} placeholder="Pertanyaan, permintaan info beasiswa, dll."></textarea>
                   </div>
                 </div>
-                <button type="submit" className="form-submit">
-                  Kirim Pendaftaran — Gratis! <i className="bi bi-send-fill"></i>
+                <button type="submit" className="form-submit" disabled={submitting}>
+                  {submitting ? 'Mengirim...' : 'Kirim Pendaftaran — Gratis!'} <i className="bi bi-send-fill"></i>
                 </button>
               </form>
             </>
@@ -1687,29 +1741,43 @@ const Daftar = () => {
 };
 
 /* ── Footer ─────────────────────────────────────── */
+const SITE_FALLBACK = {
+  school_name: 'HelloMotion High School Malang',
+  tagline: 'SMA kreatif pertama di Indonesia. Membentuk generasi kreatif, kritis, dan berbudi pekerti — siap jadi pemimpin di abad 21.',
+  whatsapp: '6282289991200',
+  instagram: 'hellomotion.malang',
+  tiktok: '',
+  youtube: '',
+  website: 'hellomotion.sch.id',
+  address: 'Gedung Malang Creative Center (MCC)\nLantai 5, Kawasan KEK Singhasari\nMalang, Jawa Timur',
+  footer_text: '© 2026 HelloMotion High School. All rights reserved.',
+};
+
 const Footer = () => {
+  const s = useCMS('/site-setting?status=published', SITE_FALLBACK, (res) => res.data);
+
   return (
     <footer className="footer">
       <div className="container footer__grid">
         <div className="footer__brand">
-          <h4>HelloMotion High School Malang</h4>
-          <p>SMA kreatif pertama di Indonesia. Membentuk generasi kreatif, kritis, dan berbudi pekerti — siap jadi pemimpin di abad 21.</p>
+          <h4>{s.school_name}</h4>
+          <p>{s.tagline}</p>
           <div className="footer__social">
-            <a href="#" aria-label="Instagram"><i className="bi bi-instagram"></i></a>
-            <a href="#" aria-label="TikTok"><i className="bi bi-tiktok"></i></a>
-            <a href="#" aria-label="YouTube"><i className="bi bi-youtube"></i></a>
-            <a href="#" aria-label="WhatsApp"><i className="bi bi-whatsapp"></i></a>
+            {s.instagram && <a href={`https://instagram.com/${s.instagram}`} target="_blank" rel="noopener" aria-label="Instagram"><i className="bi bi-instagram"></i></a>}
+            {s.tiktok && <a href={`https://tiktok.com/@${s.tiktok}`} target="_blank" rel="noopener" aria-label="TikTok"><i className="bi bi-tiktok"></i></a>}
+            {s.youtube && <a href={s.youtube} target="_blank" rel="noopener" aria-label="YouTube"><i className="bi bi-youtube"></i></a>}
+            {s.whatsapp && <a href={`https://wa.me/${s.whatsapp}`} target="_blank" rel="noopener" aria-label="WhatsApp"><i className="bi bi-whatsapp"></i></a>}
           </div>
         </div>
         <div className="footer__col">
           <h5>Kontak</h5>
-          <a href="https://wa.me/6282289991200">WA: 0822 8999 1200</a>
-          <a href="https://instagram.com/hellomotion.malang">@hellomotion.malang</a>
-          <a href="https://hellomotion.sch.id">hellomotion.sch.id</a>
+          {s.whatsapp && <a href={`https://wa.me/${s.whatsapp}`}>WA: {s.whatsapp.replace(/^62/, '0').replace(/(\d{4})(\d{4})(\d+)/, '$1 $2 $3')}</a>}
+          {s.instagram && <a href={`https://instagram.com/${s.instagram}`}>@{s.instagram}</a>}
+          {s.website && <a href={`https://${s.website}`}>{s.website}</a>}
         </div>
         <div className="footer__col">
           <h5>Alamat</h5>
-          <p>Gedung Malang Creative Center (MCC)<br/>Lantai 5, Kawasan KEK Singhasari<br/>Malang, Jawa Timur</p>
+          <p>{(s.address || '').split('\n').map((line, i) => <React.Fragment key={i}>{line}{i < (s.address || '').split('\n').length - 1 && <br/>}</React.Fragment>)}</p>
         </div>
         <div className="footer__col">
           <h5>Info</h5>
@@ -1720,7 +1788,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="container footer__copy">
-        <span>© 2026 HelloMotion High School. All rights reserved.</span>
+        <span>{s.footer_text}</span>
         <span>Dibuat dengan ♥ di Malang.</span>
       </div>
     </footer>
