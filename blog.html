@@ -111,6 +111,22 @@ p { margin: 0; color: var(--fg-2); }
 
 /* Filter */
 .blog-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+
+/* Footer */
+.footer { background: var(--hm-navy); color: var(--hm-cream); padding: 80px 0 40px; position: relative; }
+.footer__grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 40px; }
+@media (max-width: 900px) { .footer__grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 540px) { .footer__grid { grid-template-columns: 1fr; } }
+.footer__brand { max-width: 340px; }
+.footer__brand h4 { color: var(--hm-cream); font-size: 22px; margin-bottom: 10px; }
+.footer__brand p { color: rgba(255,248,234,0.65); font-size: 14px; line-height: 1.6; }
+.footer__social { display: flex; gap: 10px; margin-top: 20px; }
+.footer__social a { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); color: var(--hm-cream); font-size: 18px; transition: background 0.2s, transform 0.2s; }
+.footer__social a:hover { background: var(--hm-pink); transform: translateY(-3px); }
+.footer__col h5 { color: var(--hm-yellow); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; font-weight: 800; }
+.footer__col a, .footer__col p { display: block; color: rgba(255,248,234,0.75); font-size: 14px; padding: 6px 0; transition: color 0.2s; }
+.footer__col a:hover { color: var(--hm-yellow); }
+.footer__copy { margin-top: 56px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; color: rgba(255,248,234,0.5); font-size: 13px; }
 .filter-btn { padding: 8px 18px; border-radius: var(--r-pill); font-size: 13px; font-weight: 600; background: var(--bg-card); border: 1.5px solid var(--hm-border); color: var(--fg-2); transition: all 0.2s; cursor: pointer; }
 .filter-btn:hover { border-color: var(--hm-pink); color: var(--hm-pink); }
 .filter-btn.active { background: var(--hm-pink); color: white; border-color: var(--hm-pink); }
@@ -319,14 +335,61 @@ const BlogApp = () => {
         )}
       </main>
 
-      <footer style={{background: 'var(--hm-navy)', color: 'var(--hm-cream)', padding: '28px 0', textAlign: 'center', fontSize: 13}}>
-        <div className="container">
-          <span>© 2026 HelloMotion High School Malang</span>
-          <span style={{margin: '0 12px'}}>·</span>
-          <a href="index.html" style={{color: 'var(--hm-yellow)'}}>Kembali ke Home</a>
-        </div>
-      </footer>
+      <BlogFooter />
     </>
+  );
+};
+
+const BlogFooter = () => {
+  const [s, setS] = React.useState({
+    school_name: 'HelloMotion High School Malang',
+    tagline: 'SMA kreatif pertama di Indonesia. Membentuk generasi kreatif, kritis, dan berbudi pekerti — siap jadi pemimpin di abad 21.',
+    whatsapp: '6282289991200', instagram: 'hellomotion.malang', tiktok: '', youtube: '',
+    website: 'hellomotion.sch.id',
+    address: 'Gedung Malang Creative Center (MCC)\nLantai 5, Kawasan KEK Singhasari\nMalang, Jawa Timur',
+    footer_text: '© 2026 HelloMotion High School. All rights reserved.',
+  });
+
+  React.useEffect(() => {
+    fetchAPI('/site-setting?status=published').then(res => { if (res?.data) setS(res.data); });
+  }, []);
+
+  return (
+    <footer className="footer">
+      <div className="container footer__grid">
+        <div className="footer__brand">
+          <h4>{s.school_name}</h4>
+          <p>{s.tagline}</p>
+          <div className="footer__social">
+            {s.instagram && <a href={`https://instagram.com/${s.instagram}`} target="_blank" rel="noopener" aria-label="Instagram"><i className="bi bi-instagram"></i></a>}
+            {s.tiktok && <a href={`https://tiktok.com/@${s.tiktok}`} target="_blank" rel="noopener" aria-label="TikTok"><i className="bi bi-tiktok"></i></a>}
+            {s.youtube && <a href={s.youtube} target="_blank" rel="noopener" aria-label="YouTube"><i className="bi bi-youtube"></i></a>}
+            {s.whatsapp && <a href={`https://wa.me/${s.whatsapp}`} target="_blank" rel="noopener" aria-label="WhatsApp"><i className="bi bi-whatsapp"></i></a>}
+          </div>
+        </div>
+        <div className="footer__col">
+          <h5>Kontak</h5>
+          {s.whatsapp && <a href={`https://wa.me/${s.whatsapp}`}>WA: {s.whatsapp.replace(/^62/, '0').replace(/(\d{4})(\d{4})(\d+)/, '$1 $2 $3')}</a>}
+          {s.instagram && <a href={`https://instagram.com/${s.instagram}`}>@{s.instagram}</a>}
+          {s.website && <a href={`https://${s.website}`}>{s.website}</a>}
+        </div>
+        <div className="footer__col">
+          <h5>Alamat</h5>
+          <p>{(s.address || '').split('\n').map((line, i, arr) => <React.Fragment key={i}>{line}{i < arr.length - 1 && <br/>}</React.Fragment>)}</p>
+        </div>
+        <div className="footer__col">
+          <h5>Info</h5>
+          <a href="index.html#curriculum">Kurikulum</a>
+          <a href="index.html#daftar">PPDB 2026/2027</a>
+          <a href="index.html#faq">FAQ</a>
+          <a href="blog.html">Blog</a>
+        </div>
+      </div>
+      <div className="container footer__copy">
+        <span>{s.footer_text}</span>
+        <span>Dibuat dengan ♥ di Malang.</span>
+      </div>
+    </footer>
   );
 };
 
