@@ -10,28 +10,44 @@ Website resmi HelloMotion High School Malang. Dibangun dengan React + Vite (fron
 | Backend/CMS | Strapi 5 (Headless CMS) |
 | Database | SQLite (development), bisa diganti PostgreSQL untuk production |
 | Styling | CSS custom (design tokens, responsive) |
+| Font | Onest (body & heading), Caveat (aksen playful), Fraunces (aksen editorial) |
 
 ## Struktur Project
 
 ```
-├── src/                    # Source code frontend
-│   ├── main.jsx            # Entry point + Router setup
-│   ├── App.jsx             # Halaman beranda (semua section)
-│   ├── shared.jsx          # Komponen Nav & Footer (shared)
-│   ├── styles.css          # Semua CSS
-│   └── pages/
-│       ├── BlogPage.jsx    # Halaman listing blog
-│       └── ArticlePage.jsx # Halaman detail artikel
+├── src/                          # Source code frontend
+│   ├── main.jsx                  # Entry point + Router setup
+│   ├── App.jsx                   # Halaman beranda (compose komponen)
+│   ├── shared.jsx                # STRAPI_URL, fetchAPI, useCMS, Nav & Footer shared
+│   ├── styles.css                # Semua CSS (tokens, layout, komponen)
+│   ├── components/               # Komponen halaman beranda
+│   │   ├── SEOHead.jsx           # Meta tags SEO dari CMS
+│   │   ├── Nav.jsx               # Navbar (beranda, smooth scroll)
+│   │   ├── Hero.jsx              # Hero section
+│   │   ├── Curriculum.jsx        # Kurikulum & double diploma
+│   │   ├── Factory.jsx           # Creative Factory
+│   │   ├── Subjects.jsx          # Mata pelajaran
+│   │   ├── Life.jsx              # Kehidupan sekolah
+│   │   ├── Alumni.jsx            # Alumni & prestasi
+│   │   ├── Alur.jsx              # Alur PPDB
+│   │   ├── FAQ.jsx               # FAQ
+│   │   ├── Daftar.jsx            # Form pendaftaran
+│   │   └── Footer.jsx            # Footer
+│   └── pages/                    # Halaman blog & artikel
+│       ├── BlogPage.jsx          # Listing semua artikel
+│       └── ArticlePage.jsx       # Detail artikel
 ├── public/
-│   └── assets/             # Gambar statis (logo, foto, dll)
-├── backend/                # Strapi CMS
-│   ├── src/api/            # Content types & API
-│   ├── config/             # Konfigurasi Strapi
-│   └── .tmp/data.db        # Database SQLite (dev)
-├── index.html              # Vite entry HTML
-├── vite.config.js          # Konfigurasi Vite
-├── package.json            # Dependencies frontend
-└── .env                    # Environment variables
+│   ├── assets/                   # Gambar statis (logo, foto, dll)
+│   └── _redirects                # SPA redirect (Netlify)
+├── backend/                      # Strapi CMS
+│   ├── src/api/                  # Content types & API
+│   ├── config/                   # Konfigurasi Strapi
+│   └── .tmp/data.db              # Database SQLite (dev)
+├── index.html                    # Vite entry HTML
+├── vite.config.js                # Konfigurasi Vite
+├── package.json                  # Dependencies frontend
+├── .env                          # Environment variables
+└── README.md                     # Dokumentasi project
 ```
 
 ## Halaman & Routing
