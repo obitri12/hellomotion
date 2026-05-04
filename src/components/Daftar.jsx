@@ -1,9 +1,26 @@
+import React from 'react';
+import { useCMS } from '../shared';
+
+const DAFTAR_SEC_FALLBACK = {
+  eyebrow: 'Final CTA 🎓',
+  title: 'ENROLL NOW!\nKuota terbatas.',
+  description: 'Dapatkan promo gelombang 1: gratis biaya formulir + diskon SPP hingga 25%. Formulir online hanya 3 menit.',
+  promo_1_icon: 'bi-ticket-perforated-fill', promo_1_title: 'Gratis biaya formulir', promo_1_desc: 'Pendaftaran online tanpa biaya admin',
+  promo_2_icon: 'bi-percent', promo_2_title: 'Diskon SPP 25%', promo_2_desc: 'Khusus pendaftar gelombang 1 (sampai 30 Juni 2026)',
+  promo_3_icon: 'bi-tablet-fill', promo_3_title: 'Free iPad untuk siswa baru', promo_3_desc: 'Jadi milik siswa setelah 3 tahun masa studi',
+  form_title: 'Formulir Pendaftaran',
+  form_subtitle: 'Tim admisi akan menghubungi kamu dalam 1×24 jam kerja.',
+};
+
 const Daftar = () => {
+  const sec = useCMS('/daftar-section?status=published', DAFTAR_SEC_FALLBACK, (res) => res.data);
   const [form, setForm] = React.useState({
     nama: '', email: '', phone: '', smp: '', minat: '', catatan: ''
   });
   const [errors, setErrors] = React.useState({});
   const [submitted, setSubmitted] = React.useState(false);
+
+  const [submitting, setSubmitting] = React.useState(false);
 
   const set = (k) => (e) => setForm(s => ({ ...s, [k]: e.target.value }));
 
@@ -18,9 +35,20 @@ const Daftar = () => {
     return Object.keys(e).length === 0;
   };
 
-  const submit = (ev) => {
+  const submit = async (ev) => {
     ev.preventDefault();
-    if (validate()) setSubmitted(true);
+    if (!validate()) return;
+    setSubmitting(true);
+    try {
+      await fetchAPI('/registrations', {
+        method: 'POST',
+        body: JSON.stringify({ data: { ...form, status: 'baru' } }),
+      });
+    } catch (err) {
+      console.warn('Registration API failed, form still accepted locally');
+    }
+    setSubmitting(false);
+    setSubmitted(true);
   };
 
   return (
@@ -32,36 +60,34 @@ const Daftar = () => {
 
       <div className="container daftar__grid">
         <div className="daftar__promo">
-          <span className="section-eyebrow">Final CTA 🎓</span>
+          <span className="section-eyebrow">{sec.eyebrow}</span>
           <h2 className="section-title" style={{color: 'white'}}>
-            <em className="hl-pill hl-yellow">ENROLL NOW!</em><br/>
-            Kuota terbatas.
+            {(sec.title || '').split('\n').map((line, i) => <React.Fragment key={i}>{i === 0 ? <><em className="hl-pill hl-yellow">{line}</em><br/></> : line}</React.Fragment>)}
           </h2>
           <p style={{marginTop: 20, fontSize: 17, color: 'rgba(255,255,255,0.9)', maxWidth: 480}}>
-            Dapatkan promo gelombang 1: gratis biaya formulir + diskon SPP hingga 25%.
-            Formulir online hanya 3 menit.
+            {sec.description}
           </p>
 
           <div className="daftar__promo-highlights">
             <div className="promo-row">
-              <div className="promo-row__icon"><i className="bi bi-ticket-perforated-fill"></i></div>
+              <div className="promo-row__icon"><i className={`bi ${sec.promo_1_icon}`}></i></div>
               <div>
-                <strong>Gratis biaya formulir</strong>
-                <small>Pendaftaran online tanpa biaya admin</small>
+                <strong>{sec.promo_1_title}</strong>
+                <small>{sec.promo_1_desc}</small>
               </div>
             </div>
             <div className="promo-row">
-              <div className="promo-row__icon"><i className="bi bi-percent"></i></div>
+              <div className="promo-row__icon"><i className={`bi ${sec.promo_2_icon}`}></i></div>
               <div>
-                <strong>Diskon SPP 25%</strong>
-                <small>Khusus pendaftar gelombang 1 (sampai 30 Juni 2026)</small>
+                <strong>{sec.promo_2_title}</strong>
+                <small>{sec.promo_2_desc}</small>
               </div>
             </div>
             <div className="promo-row">
-              <div className="promo-row__icon"><i className="bi bi-tablet-fill"></i></div>
+              <div className="promo-row__icon"><i className={`bi ${sec.promo_3_icon}`}></i></div>
               <div>
-                <strong>Free iPad untuk siswa baru</strong>
-                <small>Jadi milik siswa setelah 3 tahun masa studi</small>
+                <strong>{sec.promo_3_title}</strong>
+                <small>{sec.promo_3_desc}</small>
               </div>
             </div>
           </div>
@@ -70,8 +96,8 @@ const Daftar = () => {
         <div className="form-card">
           {!submitted ? (
             <>
-              <h3>Formulir Pendaftaran</h3>
-              <p>Tim admisi akan menghubungi kamu dalam 1×24 jam kerja.</p>
+              <h3>{sec.form_title}</h3>
+              <p>{sec.form_subtitle}</p>
               <form onSubmit={submit} noValidate>
                 <div className="form-row">
                   <div className={`field ${errors.nama ? 'error' : ''}`}>
@@ -118,8 +144,8 @@ const Daftar = () => {
                     <textarea rows="3" value={form.catatan} onChange={set('catatan')} placeholder="Pertanyaan, permintaan info beasiswa, dll."></textarea>
                   </div>
                 </div>
-                <button type="submit" className="form-submit">
-                  Kirim Pendaftaran — Gratis! <i className="bi bi-send-fill"></i>
+                <button type="submit" className="form-submit" disabled={submitting}>
+                  {submitting ? 'Mengirim...' : 'Kirim Pendaftaran — Gratis!'} <i className="bi bi-send-fill"></i>
                 </button>
               </form>
             </>
@@ -139,4 +165,5 @@ const Daftar = () => {
   );
 };
 
-Object.assign(window, { Daftar });
+
+export default Daftar;

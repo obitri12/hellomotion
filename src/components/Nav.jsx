@@ -1,4 +1,7 @@
-const Nav = ({ onOpenTweaks }) => {
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const Nav = () => {
   const [scrolled, setScrolled] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -12,7 +15,7 @@ const Nav = ({ onOpenTweaks }) => {
     ['Tentang', 'about'],
     ['Kurikulum', 'curriculum'],
     ['Creative Factory', 'factory'],
-    ['Kehidupan', 'life'],
+    ['Fasilitas', 'life'],
     ['Alumni', 'alumni'],
     ['FAQ', 'faq'],
   ];
@@ -27,24 +30,14 @@ const Nav = ({ onOpenTweaks }) => {
     <nav className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
       <div className="nav__inner container">
         <a className="nav__brand" href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-          <span className="nav__logomark">
-            <svg viewBox="0 0 40 40" width="40" height="40">
-              <circle cx="20" cy="20" r="19" fill="var(--hm-yellow)" />
-              <circle cx="14" cy="17" r="2.2" fill="var(--hm-navy)" />
-              <circle cx="26" cy="17" r="2.2" fill="var(--hm-navy)" />
-              <path d="M13 24 Q20 30 27 24" stroke="var(--hm-navy)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-            </svg>
-          </span>
-          <span className="nav__wordmark">
-            <strong>HelloMotion</strong>
-            <small>High School Malang</small>
-          </span>
+          <img src="/assets/logo.png" alt="HelloMotion High School" style={{height: 40, width: 'auto'}} />
         </a>
 
         <div className={`nav__links ${open ? 'nav__links--open' : ''}`}>
           {links.map(([label, id]) => (
             <button key={id} className="nav__link" onClick={() => go(id)}>{label}</button>
           ))}
+          <Link to="/blog" className="nav__link">Blog</Link>
           <button className="btn btn-primary btn-sm nav__cta" onClick={() => go('daftar')}>
             Daftar PPDB <i className="bi bi-arrow-right"></i>
           </button>
@@ -58,4 +51,5 @@ const Nav = ({ onOpenTweaks }) => {
   );
 };
 
-Object.assign(window, { Nav });
+
+export default Nav;

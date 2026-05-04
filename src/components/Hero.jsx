@@ -1,4 +1,22 @@
+import React from 'react';
+import { STRAPI_URL, useCMS } from '../shared';
+
+const HERO_FALLBACK = {
+  badge_text: 'PPDB Tahun Ajaran 2026/2027',
+  badge_scribble: 'dibuka!',
+  headline: 'MORE THAN JUST HIGH SCHOOL!',
+  sub_text: 'Lagi nyari SMA yang bisa mengasah kreativitasmu tapi tetap nggak ketinggalan pelajaran umum? HelloMotion High School Malang jawabannya. Di sini kamu bisa belajar Film Making, Desain Grafis, Ilustrasi, Fotografi, dan banyak lagi — dengan kurikulum yang berpusat pada kebutuhanmu.',
+  cta_primary_text: 'Daftar Sekarang — Gratis Biaya Formulir!',
+  cta_secondary_text: 'Lihat Program',
+  stat_1_value: '2', stat_1_label: 'Ijazah resmi sekaligus',
+  stat_2_value: '25%', stat_2_label: 'Diskon SPP gelombang 1',
+  stat_3_value: '1:1', stat_3_label: 'Siswa & iPad pribadi',
+};
+
 const Hero = () => {
+  const h = useCMS('/hero-section?populate=*&status=published', HERO_FALLBACK, (res) => res.data);
+  const imgUrl = h.hero_image?.url ? `${STRAPI_URL}${h.hero_image.url}` : '/assets/students.png';
+
   const go = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -24,9 +42,9 @@ const Hero = () => {
         <div className="hero__copy">
           <div className="hero__badge">
             <span className="badge-pill">
-              <i className="bi bi-stars"></i> PPDB Tahun Ajaran 2026/2027
+              <i className="bi bi-stars"></i> {h.badge_text}
             </span>
-            <span className="scribble hero__scribble">dibuka!</span>
+            <span className="scribble hero__scribble">{h.badge_scribble}</span>
           </div>
 
           <h1 className="hero__headline">
@@ -38,33 +56,29 @@ const Hero = () => {
             <span style={{fontSize: '0.85em'}}>🚀</span>
           </h1>
 
-          <p className="hero__sub">
-            Lagi nyari SMA yang bisa mengasah kreativitasmu tapi tetap nggak ketinggalan pelajaran umum?
-            <strong> HelloMotion High School Malang jawabannya.</strong> Di sini kamu bisa belajar Film Making,
-            Desain Grafis, Ilustrasi, Fotografi, dan banyak lagi — dengan kurikulum yang berpusat pada kebutuhanmu.
-          </p>
+          <p className="hero__sub" dangerouslySetInnerHTML={{__html: h.sub_text.replace(/HelloMotion High School Malang/g, '<strong>HelloMotion High School Malang</strong>')}} />
 
           <div className="hero__ctas">
             <button className="btn btn-primary" onClick={() => go('daftar')}>
-              Daftar Sekarang — Gratis Biaya Formulir! <i className="bi bi-arrow-right"></i>
+              {h.cta_primary_text} <i className="bi bi-arrow-right"></i>
             </button>
             <button className="btn btn-ghost" onClick={() => go('curriculum')}>
-              <i className="bi bi-play-circle"></i> Lihat Program
+              <i className="bi bi-play-circle"></i> {h.cta_secondary_text}
             </button>
           </div>
 
           <div className="hero__stats">
             <div className="hero__stat">
-              <strong>2</strong>
-              <span>Ijazah resmi sekaligus</span>
+              <strong>{h.stat_1_value}</strong>
+              <span>{h.stat_1_label}</span>
             </div>
             <div className="hero__stat">
-              <strong>25%</strong>
-              <span>Diskon SPP gelombang 1</span>
+              <strong>{h.stat_2_value}</strong>
+              <span>{h.stat_2_label}</span>
             </div>
             <div className="hero__stat">
-              <strong>1:1</strong>
-              <span>Siswa &amp; iPad pribadi</span>
+              <strong>{h.stat_3_value}</strong>
+              <span>{h.stat_3_label}</span>
             </div>
           </div>
         </div>
@@ -72,7 +86,7 @@ const Hero = () => {
         <div className="hero__visual">
           <div className="hero__photo-wrap">
             <div className="hero__photo-bg"></div>
-            <img src="assets/students.png" alt="Siswa HelloMotion" className="hero__photo" />
+            <img src={imgUrl} alt="Siswa HelloMotion" className="hero__photo" />
             <div className="hero__chip hero__chip--1">
               <i className="bi bi-lightning-charge-fill"></i>
               <div>
@@ -84,7 +98,7 @@ const Hero = () => {
               <i className="bi bi-mortarboard-fill"></i>
               <div>
                 <small>Kuota terbatas</small>
-                <strong>Slot Hampir Penuh</strong>
+                <strong>Slot hampir penuh</strong>
               </div>
             </div>
             <div className="hero__pill">✨ Est. 2019</div>
@@ -110,4 +124,5 @@ const Hero = () => {
   );
 };
 
-Object.assign(window, { Hero });
+
+export default Hero;
