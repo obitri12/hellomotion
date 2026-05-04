@@ -84,7 +84,7 @@ const Hero = () => {
               <i className="bi bi-mortarboard-fill"></i>
               <div>
                 <small>Kuota terbatas</small>
-                <strong>Hanya 96 siswa baru</strong>
+                <strong>Slot Hampir Penuh</strong>
               </div>
             </div>
             <div className="hero__pill">✨ Est. 2019</div>
